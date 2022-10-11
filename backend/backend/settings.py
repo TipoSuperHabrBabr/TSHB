@@ -127,6 +127,9 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
 
+AUTH_USER_MODEL = 'authapp.BlogUser'
+LOGIN_URL = '/auth/login/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
