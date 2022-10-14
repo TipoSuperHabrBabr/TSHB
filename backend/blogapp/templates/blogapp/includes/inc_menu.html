@@ -1,0 +1,17 @@
+<!-- nav -->
+<ul class="nav-menu nav navbar-nav">
+    <li class="cat-1"><a href="{% url 'blog' %}">Дизайн</a></li>
+    <li class="cat-2"><a href="{% url 'blog' %}">Веб-разработка</a></li>
+    <li class="cat-3"><a href="{% url 'blog' %}">Мобильная разработка</a></li>
+    <li class="cat-4"><a href="{% url 'blog' %}">Маркетинг</a></li>
+
+    {% if user.is_authenticated %}
+    <li><a href="{% url 'auth:edit' %}">Личный кабинет</a></li>
+    <li><a href="{% url 'auth:logout' %}">выйти</a></li>
+    {% else %}
+    <li><a href="{% url 'auth:login' %}">войти</a></li>
+    <li><a href="{% url 'auth:register' %}">Регистрация</a></li>
+    {% endif %}
+
+</ul>
+<!-- /nav -->

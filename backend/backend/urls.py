@@ -18,11 +18,12 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
-from blogapp.views import index
+from blogapp.views import index, blog
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
+    path('blog/', blog, name='blog'),
     path('auth/', include('authapp.urls', namespace='auth')),
 ]
 

@@ -7,8 +7,6 @@ from authapp.forms import BlogUserLoginForm, BlogUserRegisterForm, BlogUserEditF
 from authapp.models import BlogUser
 
 
-
-
 def login(request):
     login_form = BlogUserLoginForm(data=request.POST)
 
@@ -23,7 +21,7 @@ def login(request):
             if 'next' in request.POST.keys():
                 return HttpResponseRedirect(request.POST['next'])
             else:
-                return HttpResponseRedirect(reverse('auth:edit'))
+                return HttpResponseRedirect(reverse('index'))
 
     content = {
         'title': 'Вход',
@@ -35,7 +33,7 @@ def login(request):
 
 def logout(request):
     auth.logout(request)
-    return HttpResponseRedirect(reverse('auth:login'))
+    return HttpResponseRedirect(reverse('index'))
 
 
 def register(request):
@@ -57,12 +55,12 @@ def register(request):
 def edit(request):
     if request.method == 'POST':
         edit_form = BlogUserEditForm(request.POST, request.FILES, instance=request.user)
-        if edit_form.is_valid() :
+        if edit_form.is_valid():
             edit_form.save()
             return HttpResponseRedirect(reverse('auth:edit'))
     else:
         edit_form = BlogUserEditForm(instance=request.user)
-        user = BlogUser.objects.get(pk = request.user.pk)
+        user = BlogUser.objects.get(pk=request.user.pk)
 
     content = {
         'title': 'Редактирование',
@@ -71,7 +69,3 @@ def edit(request):
 
     }
     return render(request, 'authapp/edit.html', content)
-
-
-
-
