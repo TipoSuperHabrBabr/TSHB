@@ -8,5 +8,12 @@ def index(request):
                   )
 
 
-def blog(request):
-    return render(request, 'blogapp/blog.html')
+def blog(request, pk=None):
+    category = {0: 'Все',
+                1: 'Дизайн',
+                2: 'Веб-разработка',
+                3: 'Мобильная разработка',
+                4: 'Маркетинг'}
+
+    return render(request, 'blogapp/blog.html',
+                  context={'category': category})

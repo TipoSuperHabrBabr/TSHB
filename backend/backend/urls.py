@@ -23,7 +23,7 @@ from blogapp.views import index, blog
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
-    path('blog/', blog, name='blog'),
+    path('blog/', include('blogapp.urls', namespace='blog')),
     path('auth/', include('authapp.urls', namespace='auth')),
 ]
 
