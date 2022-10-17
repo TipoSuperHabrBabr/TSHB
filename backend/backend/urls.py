@@ -25,7 +25,7 @@ urlpatterns = [
     path('', index, name='index'),
     path('blog/', include('blogapp.urls', namespace='blog')),
     path('auth/', include('authapp.urls', namespace='auth')),
-    path('blogapp/', include('blogapp.urls', namespace='blogapp')),
+    # path('blogapp/', include('blogapp.urls', namespace='blogapp')),
 ]
 
 if settings.DEBUG:
