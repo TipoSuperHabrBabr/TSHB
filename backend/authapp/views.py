@@ -1,12 +1,9 @@
+from authapp.forms import BlogUserLoginForm, BlogUserRegisterForm, BlogUserEditForm
+from authapp.models import BlogUser
 from django.contrib import auth
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-
-from authapp.forms import BlogUserLoginForm, BlogUserRegisterForm, BlogUserEditForm
-from authapp.models import BlogUser
-
-
 
 
 def login(request):
@@ -57,12 +54,12 @@ def register(request):
 def edit(request):
     if request.method == 'POST':
         edit_form = BlogUserEditForm(request.POST, request.FILES, instance=request.user)
-        if edit_form.is_valid() :
+        if edit_form.is_valid():
             edit_form.save()
             return HttpResponseRedirect(reverse('auth:edit'))
     else:
         edit_form = BlogUserEditForm(instance=request.user)
-        user = BlogUser.objects.get(pk = request.user.pk)
+        user = BlogUser.objects.get(pk=request.user.pk)
 
     content = {
         'title': 'Редактирование',
@@ -71,7 +68,3 @@ def edit(request):
 
     }
     return render(request, 'authapp/edit.html', content)
-
-
-
-

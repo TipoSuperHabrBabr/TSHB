@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+
+    <form class="form-horizontal" action="{% url 'blogapp:create_post' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div style="display: none">
+            {{ form.user_id }} {{ form.created_date }}{{ form.edit_date }} {{ form.is_active }}
+        </div>
+
+        <div class="h3 text-left head">
+            Пользователь {{ user }}
+        </div>
+              Категория
+                {{ form.category }}
+              Заголовок
+                {{ form.title }}
+              Содержание
+                {{ form.body_text }}
+              Картинка
+                {{ form.body_image }}
+                Тэги
+                {{ form.tags }}
+
+
+
+        <input type="submit" class="btn btn-primary" value="Сохранить"/>
+
+        <a href="{% url 'index' %}" style="margin: 25px" class="btn btn-danger">Назад</a>
+
+    </form>
+
+{% endblock %}
