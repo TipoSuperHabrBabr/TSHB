@@ -3,6 +3,9 @@
 
 
 {% block content %}
+<div class="section">
+    <!-- container -->
+    <div class="container">
     <form class="form-horizontal" action="{% url 'auth:register' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
@@ -14,4 +17,6 @@
            Вход
         </a>
     </button>
+    </div>
+</div>
 {% endblock %}

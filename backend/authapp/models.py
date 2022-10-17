@@ -10,7 +10,7 @@ class BlogUser(AbstractUser):
         (MALE, 'М'),
         (FEMALE, 'Ж'),
     )
-    avatar = models.ImageField(upload_to='users_avatars', blank=True)
+    avatar = models.ImageField(upload_to='users_avatars', blank=True, verbose_name='Аватар')
     age = models.PositiveSmallIntegerField(verbose_name='Возраст', default=18)
     is_active = models.BooleanField(verbose_name='активность', default=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, verbose_name='Пол')
