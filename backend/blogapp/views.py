@@ -41,7 +41,7 @@ class PostCreateView(CreateView):
 def edit_post(request, pk):
     post = Post.objects.get(id=pk)
 
-    if request.user == post.user_id: # проверяем соответствие юзера из поста и реквеста
+    if request.user == post.user_id and post.is_active == True: # проверяем соответствие юзера из поста и реквеста
         if request.method == 'POST':
 
             form = PostForm(request.POST or None, instance=post)
@@ -67,7 +67,7 @@ def edit_post(request, pk):
 def delete_post(request, pk):
     post = Post.objects.get(id=pk)
 
-    if request.user == post.user_id:  # проверяем соответствие юзера из поста и реквеста
+    if request.user == post.user_id and post.is_active == True: # проверяем соответствие юзера из поста и реквеста
         if request.method == "POST":
             post.delete()
             return HttpResponseRedirect(reverse('index'))
