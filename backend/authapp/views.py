@@ -20,7 +20,7 @@ def login(request):
             if 'next' in request.POST.keys():
                 return HttpResponseRedirect(request.POST['next'])
             else:
-                return HttpResponseRedirect(reverse('auth:edit'))
+                return HttpResponseRedirect(reverse('index'))
 
     content = {
         'title': 'Вход',
@@ -32,7 +32,7 @@ def login(request):
 
 def logout(request):
     auth.logout(request)
-    return HttpResponseRedirect(reverse('auth:login'))
+    return HttpResponseRedirect(reverse('index'))
 
 
 def register(request):
