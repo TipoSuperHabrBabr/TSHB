@@ -40,7 +40,7 @@
                 <ul class="nav-aside-menu">
                     <li><a href="{% url 'index' %}">Главная</a></li>
                     {% if user.is_authenticated %}
-                    <li><a href="{% url 'auth:edit' %}">Личный кабинет</a></li>
+                    <li><a href="{% url 'auth:user_read' user.id %}">Личный кабинет</a></li>
                     <li><a href="{% url 'auth:logout' %}">Выйти</a></li>
                     {% else %}
                     <li><a href="{% url 'auth:login' %}">Войти</a></li>

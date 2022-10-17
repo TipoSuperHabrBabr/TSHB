@@ -1,10 +1,11 @@
 from django.contrib import auth
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, resolve_url
+from django.shortcuts import render, resolve_url, get_object_or_404
 from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
+from django.views.generic import DetailView
 
 from authapp.forms import BlogUserLoginForm, BlogUserRegisterForm, BlogUserEditForm
 from authapp.models import BlogUser
@@ -105,14 +106,15 @@ def register(request):
 
 
 def edit(request):
+    user = BlogUser.objects.get(pk=request.user.pk)
     if request.method == 'POST':
         edit_form = BlogUserEditForm(request.POST, request.FILES, instance=request.user)
         if edit_form.is_valid():
             edit_form.save()
-            return HttpResponseRedirect(reverse('auth:edit'))
+            return HttpResponseRedirect(reverse('auth:user_read', args=[user.pk]))
     else:
         edit_form = BlogUserEditForm(instance=request.user)
-        user = BlogUser.objects.get(pk=request.user.pk)
+
 
     content = {
         'title': 'Редактирование',
@@ -121,3 +123,12 @@ def edit(request):
 
     }
     return render(request, 'authapp/edit.html', content)
+
+class UserDetailView(DetailView):
+    model = BlogUser
+    template_name = 'authapp/user_read.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super(UserDetailView, self).get_context_data(**kwargs)
+        ctx['ctx'] = ctx
+        return ctx

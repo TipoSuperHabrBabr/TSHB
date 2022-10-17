@@ -3,13 +3,17 @@
 
 
 {% block content %}
-    <div class="my">
-    <img src="/media/{{ user.avatar }}">
-    </div>
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <div class="row">
+            <div class="box">
+            <img src="/media/{{ user.avatar|default:'users_avatars/default.jpg' }}">
+            </div>
+        </div>
     <form class="form-horizontal" action="{% url 'auth:edit' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ edit_form.as_p }}
-        {{ profile_form.as_p }}
         <br>
         <input class="form-control" type="submit" value="Сохранить">
     </form>
@@ -28,4 +32,6 @@
            На страницу входа
         </a>
     </button>
+    </div>
+</div>
 {% endblock %}

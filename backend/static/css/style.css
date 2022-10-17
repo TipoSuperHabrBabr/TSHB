@@ -318,9 +318,26 @@ RESPONSIVE
  .nav-menu li.cat-4 a:hover, .nav-menu li.cat-4 a:focus {
      color: #8d00ff;
 }
+
+/*----------------------------*\
+	from Panova
+\*----------------------------*/
+
+.box {
+   width: 500px;
+   height: 300px;
+   margin: 0;
+}
+
+.box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 /*----------------------------*\
 	search
 \*----------------------------*/
+
  .nav-btns {
      float:right;
 }
