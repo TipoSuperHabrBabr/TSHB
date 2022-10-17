@@ -1,9 +1,62 @@
-from authapp.forms import BlogUserLoginForm, BlogUserRegisterForm, BlogUserEditForm
-from authapp.models import BlogUser
 from django.contrib import auth
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, resolve_url
+from django.template.response import TemplateResponse
 from django.urls import reverse
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+
+from authapp.forms import BlogUserLoginForm, BlogUserRegisterForm, BlogUserEditForm
+from authapp.models import BlogUser
+
+
+def password_change(request,
+                    template_name='authapp/change_password.html',
+                    post_change_redirect=None,
+                    password_change_form=PasswordChangeForm,
+                    current_app=None, extra_context=None):
+    if post_change_redirect is None:
+        post_change_redirect = reverse('auth:change_password_done')
+    else:
+        post_change_redirect = resolve_url(post_change_redirect)
+    if request.method == "POST":
+        form = password_change_form(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            # Updating the password logs out all other sessions for the user
+            # except the current one if
+            # django.contrib.auth.middleware.SessionAuthenticationMiddleware
+            # is enabled.
+            update_session_auth_hash(request, form.user)
+            return HttpResponseRedirect(post_change_redirect)
+    else:
+        form = password_change_form(user=request.user)
+    context = {
+        'form': form,
+        'title': 'Password change',
+    }
+    if extra_context is not None:
+        context.update(extra_context)
+
+    if current_app is not None:
+        request.current_app = current_app
+
+    return TemplateResponse(request, template_name, context)
+
+
+def password_change_done(request,
+                         template_name='authapp/change_password_done.html',
+                         current_app=None, extra_context=None):
+    context = {
+        'title': 'Password change successful',
+    }
+    if extra_context is not None:
+        context.update(extra_context)
+
+    if current_app is not None:
+        request.current_app = current_app
+
+    return TemplateResponse(request, template_name, context)
 
 
 def login(request):

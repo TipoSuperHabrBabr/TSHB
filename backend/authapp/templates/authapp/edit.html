@@ -18,4 +18,14 @@
            На главную
         </a>
     </button>
+    <button class="btn btn-link form-control">
+        <a href="{% url 'auth:password_change' %}">
+            Сменить пароль
+        </a>
+    </button>
+    <button class="btn btn-link form-control">
+        <a href="{% url 'auth:login' %}">
+           На страницу входа
+        </a>
+    </button>
 {% endblock %}
