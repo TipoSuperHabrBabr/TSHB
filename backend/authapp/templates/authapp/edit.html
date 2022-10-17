@@ -14,6 +14,11 @@
         <input class="form-control" type="submit" value="Сохранить">
     </form>
     <button class="btn btn-link form-control">
+        <a href="{% url 'auth:password_change' %}">
+            Сменить пароль
+        </a>
+    </button>
+    <button class="btn btn-link form-control">
         <a href="{% url 'auth:login' %}">
            На страницу входа
         </a>
