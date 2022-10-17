@@ -9,7 +9,7 @@
         {% csrf_token %}
 
             <div style="display: none">
-                {{ form.user_id }} {{ form.created_date }}{{ form.edit_date }}
+                {{ form.user_id }} {{ form.created_date }}{{ form.edit_date }} {{ form.is_active }}
             </div>
 
          <div class="h3 text-left head">
@@ -29,7 +29,9 @@
 
         <input type="submit" class="btn btn-primary" value="Сохранить"/>
 
-        <a href="{% url 'index' %}" style="margin: 25px" class="btn btn-danger">Назад</a>
+        <a href="{% url 'index' %}" style="margin: 25px" class="btn btn-primary">Назад</a>
+
+        <a href="{% url 'blogapp:delete_post' post.pk %}" style="margin: 25px" class="btn btn-danger">Удалить</a>
 
     </form>
 
