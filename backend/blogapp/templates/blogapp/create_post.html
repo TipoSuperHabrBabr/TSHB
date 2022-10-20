@@ -1,20 +1,26 @@
-{% extends 'base.html' %}
+{% extends 'blogapp/base.html' %}
 {% load static %}
 
 
 {% block content %}
+<div class="section">
+    <!-- container -->
+    <div class="container">
 
-
-    <form class="form-horizontal" action="{% url 'blogapp:create_post' %}" method="post" enctype="multipart/form-data">
+    <form class="form-horizontal" style="margin: 25px;" action="{% url 'blogapp:create_post' %}"
+          method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
         <div style="display: none">
             {{ form.user_id }} {{ form.created_date }}{{ form.edit_date }} {{ form.is_active }}
         </div>
 
-        <div class="h3 text-left head">
-            Пользователь {{ user }}
-        </div>
+         <div class="h3 text-left head">
+                       <p style="text-align: center">Создание статьи </p>
+
+             <p>Пользователь {{ user}} </p>
+
+         </div>
               Категория
                 {{ form.category }}
               Заголовок
@@ -33,5 +39,7 @@
         <a href="{% url 'index' %}" style="margin: 25px" class="btn btn-danger">Назад</a>
 
     </form>
+    </div>
+</div>
 
 {% endblock %}
