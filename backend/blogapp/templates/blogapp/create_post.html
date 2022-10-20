@@ -3,7 +3,9 @@
 
 
 {% block content %}
-
+<div class="section">
+    <!-- container -->
+    <div class="container">
 
     <form class="form-horizontal" style="margin: 25px;" action="{% url 'blogapp:create_post' %}"
           method="post" enctype="multipart/form-data">
@@ -37,5 +39,7 @@
         <a href="{% url 'index' %}" style="margin: 25px" class="btn btn-danger">Назад</a>
 
     </form>
+    </div>
+</div>
 
 {% endblock %}

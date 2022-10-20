@@ -4,7 +4,9 @@
 
 {% block content %}
 
-
+<div class="section">
+    <!-- container -->
+    <div class="container">
     <form class="form-horizontal" style="margin: 25px;" action="{% url 'blogapp:edit_post' post.pk %}" method="post"
           enctype="multipart/form-data">
         {% csrf_token %}
@@ -38,5 +40,6 @@
         <a href="{% url 'blog:delete_post' post.pk %}" style="margin: 25px" class="btn btn-danger">Удалить</a>
 
     </form>
-
+    </div>
+</div>
 {% endblock %}
