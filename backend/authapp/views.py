@@ -132,3 +132,13 @@ class UserDetailView(DetailView):
         ctx = super(UserDetailView, self).get_context_data(**kwargs)
         ctx['ctx'] = ctx
         return ctx
+
+
+def profile(request, pk):
+    user = get_object_or_404(BlogUser,pk=pk)
+    content = {
+        'title': 'Профиль пользователя',
+        'user_read': user
+
+    }
+    return render(request, 'authapp/profile.html', content)

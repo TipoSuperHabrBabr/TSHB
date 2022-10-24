@@ -37,3 +37,4 @@ class BlogUserEditForm(UserChangeForm):
             field.widget.attrs['class'] = 'form-control'
             if field_name == 'password':
                 field.widget = forms.HiddenInput()
+
