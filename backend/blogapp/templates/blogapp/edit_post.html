@@ -34,7 +34,7 @@
                 {{ form.tags }}
 
 
-                <input type="submit" class="btn btn-primary" value="Сохранить"/>
+                <input type="submit" class="btn btn-primary" value="Сохранить" onClick="window.open('{% url 'blog:read_post' post.pk %}')"/>
 
                 <a href="{% url 'index' %}" style="margin: 25px" class="btn btn-primary">Назад</a>
 

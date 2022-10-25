@@ -74,9 +74,8 @@
                                 </div>
                                 <div class="media-body">
                                     <div class="media-heading">
-                                        <h3>{{ post.user_id }}</h3>
+                                        <a href="{% url 'index' %}">{{ post.user_id }}</a>
                                     </div>
-                                    <p>{{ post.user_id.about_me }} </p>
                                     <ul class="author-social">
                                         <li><a href="#"><i class="fa fa-facebook"></i></a></li>
                                         <li><a href="#"><i class="fa fa-twitter"></i></a></li>
