@@ -3,43 +3,42 @@
 
 
 {% block content %}
-<div class="section">
-    <!-- container -->
-    <div class="container">
+    <div class="section">
+        <!-- container -->
+        <div class="container">
 
-    <form class="form-horizontal" style="margin: 25px;" action="{% url 'blogapp:create_post' %}"
-          method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+            <form class="form-horizontal" style="margin: 25px;" action=""
+                  method="post" enctype="multipart/form-data">
+                {% csrf_token %}
 
-        <div style="display: none">
-            {{ form.user_id }} {{ form.created_date }}{{ form.edit_date }} {{ form.is_active }}
-        </div>
+                <div style="display: none">
+                    {{ form.user_id }} {{ form.created_date }}{{ form.edit_date }} {{ form.is_active }}
+                </div>
 
-         <div class="h3 text-left head">
-                       <p style="text-align: center">Создание статьи </p>
+                <div class="h3 text-left head">
+                    <p style="text-align: center">Создание статьи </p>
 
-             <p>Пользователь {{ user}} </p>
+                    <p>Пользователь {{ user }} </p>
 
-         </div>
-              Категория
+                </div>
+                Категория
                 {{ form.category }}
-              Заголовок
+                Заголовок
                 {{ form.title }}
-              Содержание
+                Содержание
                 {{ form.body_text }}
-              Картинка
+                Картинка
                 {{ form.body_image }}
                 Тэги
                 {{ form.tags }}
 
 
+                <input type="submit" class="btn btn-primary" value="Сохранить"/>
 
-        <input type="submit" class="btn btn-primary" value="Сохранить"/>
+                <a href="{% url 'index' %}" style="margin: 25px" class="btn btn-danger">Назад</a>
 
-        <a href="{% url 'index' %}" style="margin: 25px" class="btn btn-danger">Назад</a>
-
-    </form>
+            </form>
+        </div>
     </div>
-</div>
 
 {% endblock %}
