@@ -17,6 +17,10 @@
                     <li class="cat-2"><a href="{% url 'blog:category' %}?id=2">Веб-разработка</a></li>
                     <li class="cat-3"><a href="{% url 'blog:category' %}?id=3">Мобильная разработка</a></li>
                     <li class="cat-4"><a href="{% url 'blog:category' %}?id=4">Маркетинг</a></li>
+                    {% if user.is_authenticated %}
+                    <li class="cat-1"><a href="{% url 'blogapp:create_post' %}" style="margin-left: 25px">Создать
+                            статью</a></li>
+                    {% endif %}
                 </ul>
                 <!-- /nav -->
                 <!-- search & aside toggle -->
@@ -40,17 +44,24 @@
                 <ul class="nav-aside-menu">
                     <li><a href="{% url 'index' %}">Главная</a></li>
                     {% if user.is_authenticated %}
-                    <li><a href="{% url 'auth:user_read' user.id %}">Личный кабинет</a></li>
-                    <li><a href="{% url 'auth:logout' %}">Выйти</a></li>
+                        <li><a href="{% url 'auth:user_read' user.id %}">Личный кабинет</a></li>
+                        <li><a href="{% url 'auth:logout' %}">Выйти</a></li>
                     {% else %}
-                    <li><a href="{% url 'auth:login' %}">Войти</a></li>
-                    <li><a href="{% url 'auth:register' %}">Регистрация</a></li>
+                        <li><a href="{% url 'auth:login' %}">Войти</a></li>
+                        <li><a href="{% url 'auth:register' %}">Регистрация</a></li>
                     {% endif %}
                     <li><a href="#">Advertisement</a></li>
                     <li><a href="contact.html">Контакты</a></li>
                 </ul>
             </div>
             <!-- /nav -->
+            <div class="section-row">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'blogapp:create_post' %}" style="margin: 25px" class="btn btn-danger">Создать
+                        статью</a>
+                {% endif %}
+            </div>
+
 
             <!-- widget posts -->
             <div class="section-row">
