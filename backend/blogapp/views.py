@@ -53,6 +53,7 @@ def blog(request):
 def post_detail(request, pk):
     post_id = Post.objects.get(id=pk)
     comments = Comment.objects.filter(post_id=pk, is_active=True)
+    print(f'111111111111111  {post_id.user_id.id}')
     user_id = request.user
     new_comment = None
     if request.method == 'POST':

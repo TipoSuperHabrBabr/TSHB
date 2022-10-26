@@ -74,7 +74,7 @@
                                 </div>
                                 <div class="media-body">
                                     <div class="media-heading">
-                                        <a href="{% url 'auth:profile' user.pk %}">{{ post.user_id }}</a>
+                                        <a href="{% url 'auth:profile' post.user_id.id %}">{{ post.user_id }}</a>
                                     </div>
                                     <ul class="author-social">
                                         <li><a href="#"><i class="fa fa-facebook"></i></a></li>
