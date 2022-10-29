@@ -85,6 +85,7 @@ class PostCreateView(CreateView):
         context_data = super().get_context_data(**kwargs)
         user = self.request.user
         user_id = get_object_or_404(BlogUser, username=user).id
+        context_data['user'] = user
         context_data['user_id '] = user_id
         context_data['form'] = PostForm(initial={'user_id': user_id})
         return context_data
@@ -114,6 +115,7 @@ def edit_post(request, pk):
         'title': 'Редактирование статьи',
         'form': form,
         'post': post,
+        'user': request.user
     }
     return render(request, 'blogapp/edit_post.html', content)
 
@@ -129,7 +131,10 @@ def delete_post(request, pk):
         post.delete()
         return HttpResponseRedirect(reverse('index'))
 
-    context = {'object': post}
+    context = {
+        'object': post,
+        'user': request.user
+    }
     return render(request, 'blogapp/post_confirm_delete.html', context)
 
 
@@ -151,6 +156,5 @@ class CommentUpdateView(UpdateView):
     template_name = 'blogapp/edit_comment.html'
 
     def get_success_url(self, **kwargs):
-        print(11111111)
         print(self.kwargs['pk'])
         return reverse('blogapp:read_post', kwargs=dict(pk=self.kwargs['pkp']))

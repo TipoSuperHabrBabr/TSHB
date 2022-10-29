@@ -12,4 +12,6 @@ urlpatterns = [
     path('password_change/done/',authapp.password_change_done, name="change_password_done"),
     path('read/<int:pk>/', authapp.UserDetailView.as_view(), name='user_read'),
     path('profile/<int:pk>/', authapp.profile, name='profile'),
+    path('profile_banned/<int:pk>/', authapp.profile, name='profile_banned'),
+    path('profile_activate/<int:pk>/', authapp.profile, name='profile_activate'),
 ]

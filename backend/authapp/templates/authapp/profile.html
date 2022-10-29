@@ -3,35 +3,47 @@
 
 {% block content %}
 <div class="section">
-    <!-- container -->
-    <div class="container">
-        <div class="row">
+  <!-- container -->
+  <div class="container">
+    <div class="row">
 
-      Пользователь<strong>{{ user_read.first_name|title }}  -
-                     {{ user_read.username|title }}</strong>
-            <div class="box"><img src="/media/{{ user_read.avatar|default:'users_avatars/default.jpg' }}"
-         alt="{{ user_read.username }}"></div>
-    <div class="post">
-      <b>О себе</b>
-      <p>{{ user_read.about_me }}</p>
-      <b>Пол</b>
-      <p>{{ user_read.gender }}</p>
-      <b>Электронная почта</b>
-      <p>{{ user_read.email }}</p>
-          {% if user.is_moderator %}
-              <p>
-                <button>
-                  <a href={% url '' %}>
-                    Заблокировать
-                  </a>
-                </button>
-          {% endif %}
-          <button>
-          <a href={% url 'index' %}>
-            На главную
+      Пользователь<strong>{{ user_read.first_name|title }} -
+        {{ user_read.username|title }}</strong>
+      <div class="box"><img src="/media/{{ user_read.avatar|default:'users_avatars/default.jpg' }}"
+          alt="{{ user_read.username }}"></div>
+      <div class="post">
+        <b>О себе</b>
+        <p>{{ user_read.about_me }}</p>
+        <b>Пол</b>
+        <p>{{ user_read.gender }}</p>
+        <b>Электронная почта</b>
+        <p>{{ user_read.email }}</p>
+
+        {% if user.is_moderator and user_read.id != user.id or user.is_superuser and user_read.id != user.id %}
+        {% if user_read.is_banned %}
+        Пользователь заблокирован на {{ user_read.banned_time }} дней. <br>
+        Дата начала блокировки {{ user_read.start_banned_time }}.<br>
+        Дата окончания блокировки {{ user_read.stop_banned_time }}.<br>
+        <br>
+        <p>
+          <a href="{% url 'auth:profile_activate' user_read.id %}">
+            <button>Разблокировать</button>
           </a>
-        </button>
-      </p>
-        </div>
+        </p>
+        {% else %}
+        <form class="form-horizontal" action="{% url 'auth:profile_banned' user_read.id %}" method="post">
+          {% csrf_token %}
+          {{ banned_form.as_table }}<br>
+          <input type="submit" class="" value="Заблокировать пользователя">
+        </form>
+        {% endif %}
+        {% endif %}
+        <br>
+        <p>
+          <a href="{% url 'index' %}">
+            <button>На главную</button>
+          </a>
+        </p>
+      </div>
     </div>
-{% endblock %}
+    {% endblock %}

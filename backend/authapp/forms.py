@@ -1,4 +1,5 @@
 from django import forms
+
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 
 from authapp.models import BlogUser
@@ -38,3 +39,6 @@ class BlogUserEditForm(UserChangeForm):
             if field_name == 'password':
                 field.widget = forms.HiddenInput()
 
+
+class BannedForm(forms.Form):
+    banned_time = forms.IntegerField(min_value=1, required='True')
