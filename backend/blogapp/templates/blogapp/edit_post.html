@@ -7,6 +7,7 @@
     <div class="section">
         <!-- container -->
         <div class="container">
+            {% if not user.is_banned %}
             <form class="form-horizontal" style="margin: 25px;" action="{% url 'blogapp:edit_post' post.pk %}"
                   method="post"
                   enctype="multipart/form-data">
@@ -41,6 +42,10 @@
                 <a href="{% url 'blog:delete_post' post.pk %}" style="margin: 25px" class="btn btn-danger">Удалить</a>
 
             </form>
+            {% endif %}
+            {% if user.is_banned %}
+                Доступ запрещен
+            {% endif %}
         </div>
     </div>
 {% endblock %}

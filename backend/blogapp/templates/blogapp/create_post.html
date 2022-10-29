@@ -6,7 +6,7 @@
     <div class="section">
         <!-- container -->
         <div class="container">
-
+            {% if not user.is_banned %}
             <form class="form-horizontal" style="margin: 25px;" action=""
                   method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -38,6 +38,10 @@
                 <a href="{% url 'index' %}" style="margin: 25px" class="btn btn-danger">Назад</a>
 
             </form>
+            {% endif %}
+            {% if user.is_banned %}
+                Доступ запрещен
+            {% endif %}
         </div>
     </div>
 

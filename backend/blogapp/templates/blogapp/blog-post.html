@@ -76,7 +76,7 @@
                                 {% if user.is_authenticated %}
                                 <div class="media-heading">
                                     <a href="{% url 'auth:profile' post.user_id.id %}">
-                                        Профиль пользователя {{ post.user_id }}
+                                        Автор: {{ post.user_id }} (перейти в профиль)
                                     </a>
                                 </div>
                                 {% endif %}
