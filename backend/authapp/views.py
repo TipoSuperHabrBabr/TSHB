@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from django.contrib import auth
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, resolve_url, get_object_or_404
@@ -6,8 +7,9 @@ from django.urls import reverse
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.views.generic import DetailView
+import datetime
 
-from authapp.forms import BlogUserLoginForm, BlogUserRegisterForm, BlogUserEditForm
+from authapp.forms import BlogUserLoginForm, BlogUserRegisterForm, BlogUserEditForm, BannedForm
 from authapp.models import BlogUser
 
 
@@ -135,10 +137,37 @@ class UserDetailView(DetailView):
 
 
 def profile(request, pk):
-    user = get_object_or_404(BlogUser,pk=pk)
+    user = get_object_or_404(BlogUser, pk=pk)
+
+    if request.method == 'POST':
+        print('method =', request.method)
+        print('path =', request.path)
+        # print('POST =', request.POST.banned_days)
+
+        if '/auth/profile_banned/' in request.path:
+            banned_form = BannedForm(request.POST)
+            if banned_form.is_valid():
+                print(banned_form['banned_time'].value())
+                user.is_banned = 1
+                user.banned_time = banned_form['banned_time'].value()
+                user.start_banned_time = datetime.date.today()
+                user.stop_banned_time = user.start_banned_time + datetime.timedelta(days=int(user.banned_time))
+                user.save()
+    else:
+        banned_form = BannedForm()
+        print('method =', request.method)
+        print('path =', request.path)
+        if '/auth/profile_activate/' in request.path:
+            user.is_banned = 0
+            user.banned_time = 0
+            user.start_banned_time = None
+            user.stop_banned_time = None
+            user.save()
+            banned_form = BannedForm()
+
     content = {
         'title': 'Профиль пользователя',
-        'user_read': user
-
+        'user_read': user,
+        'banned_form': banned_form,
     }
     return render(request, 'authapp/profile.html', content)
