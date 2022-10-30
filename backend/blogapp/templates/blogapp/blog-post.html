@@ -105,15 +105,22 @@
                             <div class="media-left">
                                 <img class="media-object" src="/media/{{ comment.user_id.avatar }}" alt="">
                             </div>
+
+                            {% if comment.head_comment %}
                             <div class="media-body">
                                 <div class="media-heading">
-                                    <h4>{{ comment.user_id }}</h4>
+                                    <h4>{{ comment.user_id }} (comment_id={{ comment.id }})</h4>
 
                                     <span class="time">{{ comment.created_date }}</span>
                                     {% if user.is_authenticated %}
+
+                                    {% if comment.user_id != user_id %}
+                                    <!-- отвечать можно только на основной комментарий -->
                                     <a href="{% url 'blogapp:comment_reply' comment.id %}" class="reply">
                                         Reply
                                     </a>
+                                    {% endif %}
+
                                     {% if comment.user_id == user_id %}
                                     <a href="{% url 'blogapp:comment_delete' comment.id %}" class="reply">
                                         Delete
@@ -127,6 +134,28 @@
                                 </div>
                                 <p>{{ comment.body_text }}</p>
                             </div>
+                            {% else %}
+                            <div class="media-body">
+                                <div class="media-heading-reply">
+                                    <h5>{{ comment.user_id }} (comment_id={{ comment.id }})</h5>
+
+                                    <span class="time">{{ comment.created_date }}</span>
+                                    {% if user.is_authenticated %}
+
+                                    {% if comment.user_id == user_id %}
+                                    <a href="{% url 'blogapp:comment_delete' comment.id %}" class="reply">
+                                        Delete
+                                    </a>
+                                    <a href="{% url 'blogapp:comment_update' comment.id post.id %}" class="reply">
+                                        Update
+                                    </a>
+                                    {% endif %}
+
+                                    {% endif %}
+                                    <p>{{ comment.body_text }}</p>
+                                </div>
+                            </div>
+                            {% endif %}
 
                         </div>
 
@@ -151,6 +180,7 @@
                             {{ form.created_date.as_hidden }}
                             {{ form.post_id.as_hidden }}
                             {{ form.is_active.as_hidden }}
+                            {{ form.parent_comment_id.as_hidden }}
                             {{ form.head_comment.as_hidden }}
 
                             <div class="col-md-20">

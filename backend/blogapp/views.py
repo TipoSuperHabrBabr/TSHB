@@ -51,14 +51,20 @@ def blog(request):
 
 def post_detail(request, pk):
     post_id = Post.objects.get(id=pk)
-    comments = Comment.objects.filter(post_id=pk, is_active=True)
+    comments = Comment.objects.filter(post_id=pk, is_active=True).order_by('parent_comment_id')
     user_id = request.user
     new_comment = None
 
     if request.method == 'POST':
         comment_form = CommentForm(data=request.POST)
+
         if comment_form.is_valid():
             comment_form.save(commit=True)
+            # считываем только что сохраненный комментарий
+            comment = Comment.objects.get(parent_comment_id=0)
+            # и записываем собственный id как родительский
+            comment.parent_comment_id = comment.id
+            comment.save()
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
         comment_form = CommentForm(initial={'user_id': user_id, 'post_id': post_id, })
@@ -140,11 +146,22 @@ def delete_post(request, pk):
 @login_required
 def delete_comment(request, pk):
     comment = Comment.objects.get(id=pk)
+
     if request.user != comment.user_id or comment.is_active is not True:  # проверяем доступ юзера и статус поста
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-    selected_comment = get_object_or_404(Comment, id=pk)
-    selected_comment.delete()
+    # selected_comment = get_object_or_404(Comment, id=pk)
+    # selected_comment.delete()
+
+    if comment.head_comment:
+        # при удалении головного комментария удаляем его и все подкомментарии
+        comments = Comment.objects.filter(parent_comment_id=pk)
+        for comment in comments:
+            comment.delete()
+    else:
+        # иначе удалем только один подкомментарий
+        comment.delete()
+
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
@@ -152,35 +169,26 @@ def delete_comment(request, pk):
 def comment_reply(request, pk):
     user = request.user
     comment = Comment.objects.get(id=pk)
-    form = CommentForm
-    print(50*'*')
-    print('comment_reply, method =', request.method)
+    reply_form = CommentForm
 
     if request.method == "POST":
-        comments = Comment.objects.filter(post_id=comment.post_id.id, is_active=True)
+        # считываем форму
+        reply_form = CommentForm(data=request.POST)
 
-        form = CommentForm(request.POST)
+        # формируем подкомментарий
         comment_new = Comment()
         comment_new.post_id = comment.post_id
         comment_new.user_id = user
-        comment_new.body_text = form['body_text'].value()
+        comment_new.body_text = reply_form['body_text'].value()
         comment_new.parent_comment_id = comment.id
         comment_new.head_comment = False
         comment_new.save()
-
-        return render(request,
-                  'blogapp/blog-post.html',
-                  {'post': comment.post_id,
-                   'user_id': user,
-                   'comments': comments,
-                   'new_comment': None,
-                   'form': CommentForm,
-                   }
-                  )
+        # возвращаемся на страницу описания блога с комментариями
+        return HttpResponseRedirect(f'/blog/read_post/{comment.post_id.id}/')
 
     context = {
         'comment': comment,
-        'form': form,
+        'form': reply_form,
         'user': user,
     }
     return render(request, 'blogapp/comment_reply.html', context)
