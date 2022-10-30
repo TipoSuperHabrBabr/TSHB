@@ -33,6 +33,8 @@ class Comment(models.Model):
     body_text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     is_active = models.BooleanField(default=True)
+    parent_comment_id = models.IntegerField(default=0)
+    head_comment = models.BooleanField(default=True)
 
     def delete(self, *args, **kwargs):
         self.is_active = False

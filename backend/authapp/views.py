@@ -140,23 +140,20 @@ def profile(request, pk):
     user = get_object_or_404(BlogUser, pk=pk)
 
     if request.method == 'POST':
-        print('method =', request.method)
-        print('path =', request.path)
-        # print('POST =', request.POST.banned_days)
-
+        # если пришла команда забанить пользователя
         if '/auth/profile_banned/' in request.path:
             banned_form = BannedForm(request.POST)
             if banned_form.is_valid():
-                print(banned_form['banned_time'].value())
                 user.is_banned = 1
                 user.banned_time = banned_form['banned_time'].value()
                 user.start_banned_time = datetime.date.today()
                 user.stop_banned_time = user.start_banned_time + datetime.timedelta(days=int(user.banned_time))
                 user.save()
     else:
+        # если простой запрос страницы
         banned_form = BannedForm()
-        print('method =', request.method)
-        print('path =', request.path)
+        
+        # или команда снять блокировку
         if '/auth/profile_activate/' in request.path:
             user.is_banned = 0
             user.banned_time = 0

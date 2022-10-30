@@ -12,7 +12,6 @@ from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, UpdateView
 
 
-# Create your views here.
 def index(request):
     posts_list = Post.objects.all().order_by('-created_date')
     new_posts_list = Post.objects.all().order_by('-created_date')[0:2]
@@ -53,9 +52,9 @@ def blog(request):
 def post_detail(request, pk):
     post_id = Post.objects.get(id=pk)
     comments = Comment.objects.filter(post_id=pk, is_active=True)
-    print(f'111111111111111  {post_id.user_id.id}')
     user_id = request.user
     new_comment = None
+
     if request.method == 'POST':
         comment_form = CommentForm(data=request.POST)
         if comment_form.is_valid():
@@ -149,6 +148,45 @@ def delete_comment(request, pk):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+@login_required
+def comment_reply(request, pk):
+    user = request.user
+    comment = Comment.objects.get(id=pk)
+    form = CommentForm
+    print(50*'*')
+    print('comment_reply, method =', request.method)
+
+    if request.method == "POST":
+        comments = Comment.objects.filter(post_id=comment.post_id.id, is_active=True)
+
+        form = CommentForm(request.POST)
+        comment_new = Comment()
+        comment_new.post_id = comment.post_id
+        comment_new.user_id = user
+        comment_new.body_text = form['body_text'].value()
+        comment_new.parent_comment_id = comment.id
+        comment_new.head_comment = False
+        comment_new.save()
+
+        return render(request,
+                  'blogapp/blog-post.html',
+                  {'post': comment.post_id,
+                   'user_id': user,
+                   'comments': comments,
+                   'new_comment': None,
+                   'form': CommentForm,
+                   }
+                  )
+
+    context = {
+        'comment': comment,
+        'form': form,
+        'user': user,
+    }
+    return render(request, 'blogapp/comment_reply.html', context)
+
+
+
 @method_decorator(login_required, name='dispatch')
 class CommentUpdateView(UpdateView):
     model = Comment
@@ -156,5 +194,5 @@ class CommentUpdateView(UpdateView):
     template_name = 'blogapp/edit_comment.html'
 
     def get_success_url(self, **kwargs):
-        print(self.kwargs['pk'])
+        # print(self.kwargs['pk'])
         return reverse('blogapp:read_post', kwargs=dict(pk=self.kwargs['pkp']))

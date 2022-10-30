@@ -19,7 +19,8 @@
         <b>Электронная почта</b>
         <p>{{ user_read.email }}</p>
 
-        {% if user.is_moderator and user_read.id != user.id or user.is_superuser and user_read.id != user.id %}
+        {% if user_read.id != user.id %}
+        {% if user.is_moderator or user.is_superuser %}
         {% if user_read.is_banned %}
         Пользователь заблокирован на {{ user_read.banned_time }} дней. <br>
         Дата начала блокировки {{ user_read.start_banned_time }}.<br>
@@ -36,6 +37,7 @@
           {{ banned_form.as_table }}<br>
           <input type="submit" class="" value="Заблокировать пользователя">
         </form>
+        {% endif %}
         {% endif %}
         {% endif %}
         <br>

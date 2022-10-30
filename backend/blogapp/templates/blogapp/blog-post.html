@@ -57,10 +57,12 @@
 
                 {% if post.user_id == user_id %}
 
-                <a href="{% url 'blogapp:edit_post' post.id %}" style="margin: 25px"
-                    class="btn btn-primary">Редактировать пост</a>
-                <a href="{% url 'blogapp:delete_post' post.id %}" style="margin: 25px" class="btn btn-primary">Удалить
-                    пост</a>
+                <a href="{% url 'blogapp:edit_post' post.id %}" style="margin: 25px" class="btn btn-primary">
+                    Редактировать пост
+                </a>
+                <a href="{% url 'blogapp:delete_post' post.id %}" style="margin: 25px" class="btn btn-primary">
+                    Удалить пост
+                </a>
                 {% endif %}
 
                 {% endif %}
@@ -109,11 +111,16 @@
 
                                     <span class="time">{{ comment.created_date }}</span>
                                     {% if user.is_authenticated %}
-                                    <a href="#" class="reply">Reply</a>
+                                    <a href="{% url 'blogapp:comment_reply' comment.id %}" class="reply">
+                                        Reply
+                                    </a>
                                     {% if comment.user_id == user_id %}
-                                    <a href="{% url 'blogapp:delete_comment' comment.id %}" class="reply">Delete</a>
-                                    <a href="{% url 'blogapp:comment-update' comment.id post.id %}"
-                                        class="reply">Update</a>
+                                    <a href="{% url 'blogapp:comment_delete' comment.id %}" class="reply">
+                                        Delete
+                                    </a>
+                                    <a href="{% url 'blogapp:comment_update' comment.id post.id %}" class="reply">
+                                        Update
+                                    </a>
                                     {% endif %}
 
                                     {% endif %}
@@ -140,8 +147,11 @@
                         <form action="." method="post">
                             {% csrf_token %}
 
-                            {{ form.user_id.as_hidden }} {{ form.created_date.as_hidden }} {{ form.post_id.as_hidden }}
+                            {{ form.user_id.as_hidden }}
+                            {{ form.created_date.as_hidden }}
+                            {{ form.post_id.as_hidden }}
                             {{ form.is_active.as_hidden }}
+                            {{ form.head_comment.as_hidden }}
 
                             <div class="col-md-20">
                                 {{ form.body_text }}

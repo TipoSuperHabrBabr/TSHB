@@ -10,6 +10,7 @@ urlpatterns = [
     # path('read_post/<int:pk>/', blogapp.PostRead.as_view(), name='read_post'),
     path('read_post/<int:pk>/', blogapp.post_detail, name='read_post'),
     path('delete_post/<int:pk>/', blogapp.delete_post, name='delete_post'),
-    path('delete_comment/<int:pk>/', blogapp.delete_comment, name='delete_comment'),
-    path('edit_comment/<int:pk>/post/<int:pkp>/', blogapp.CommentUpdateView.as_view(), name="comment-update"),
+    path('comment_delete/<int:pk>/', blogapp.delete_comment, name='comment_delete'),
+    path('comment_update/<int:pk>/post/<int:pkp>/', blogapp.CommentUpdateView.as_view(), name="comment_update"),
+    path('comment_reply/<int:pk>/', blogapp.comment_reply, name='comment_reply'),
 ]

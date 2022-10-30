@@ -4,10 +4,12 @@
 
 {% block content %}
 
+user.id ={{ user.id }}
+comment.user_id ={{ comment.user_id_id }}
 <div class="section">
     <!-- container -->
     <div class="container">
-        <form action="." method="post">
+        <form action="{% url 'blogapp:comment_reply' comment.id %}" method="post">
             {% csrf_token %}
 
             {{ form.user_id.as_hidden }}
