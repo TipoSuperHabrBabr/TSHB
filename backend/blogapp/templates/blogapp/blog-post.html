@@ -96,37 +96,33 @@
                     </div>
                 </div>
                 <!-- /author -->
-                <!-- add comment -->
-                <div class="section-row">
-                    <div class="section-title">
+                <div class="row">
+                    <div class="col-md-20">
                         {% if user.is_authenticated %}
                         {% if new_comment %}
                         <h2>Your comment has been added.</h2>
                         {% endif %}
 
-                        <h2>Добавить комментарий.</h2>
-                    </div>
-                    <form class="post-reply" action="." method="post">
-                        <div class="row">
-                        {% csrf_token %}
+                        <h2>Add a new comment</h2>
 
-                        {{ form.user_id.as_hidden }} {{ form.created_date.as_hidden }} {{ form.post_id.as_hidden }}
-                        {{ form.is_active.as_hidden }}
+                        <form action="." method="post">
+                            {% csrf_token %}
 
-                            <div class="col-md-12">
-                                <div class= "form-group">
-                                   {{ form.body_text }}
-                                </div>
-                                <p><input type="submit" value="Add comment"></p>
+                            {{ form.user_id.as_hidden }}
+                            {{ form.created_date.as_hidden }}
+                            {{ form.post_id.as_hidden }}
+                            {{ form.is_active.as_hidden }}
+                            {{ form.parent_comment_id.as_hidden }}
+                            {{ form.head_comment.as_hidden }}
+
+                            <div class="col-md-20">
+                                {{ form.body_text }}
                             </div>
-                        </div>    
-                    </form>
+                            <p><input type="submit" value="Add comment"></p>
+                        </form>
                         {% endif %}
+                    </div>
                 </div>
-
-                <!-- </div> -->
-                <!-- /add comment -->
-
                 <!-- comments -->
                 <div class="section-row">
                     <div class="section-title">
@@ -197,49 +193,7 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-20">
-                        {% if user.is_authenticated %}
-                        {% if new_comment %}
-                        <h2>Your comment has been added.</h2>
-                        {% endif %}
 
-                        <h2>Add a new comment</h2>
-
-                        <form action="." method="post">
-                            {% csrf_token %}
-
-                            {{ form.user_id.as_hidden }}
-                            {{ form.created_date.as_hidden }}
-                            {{ form.post_id.as_hidden }}
-                            {{ form.is_active.as_hidden }}
-                            {{ form.parent_comment_id.as_hidden }}
-                            {{ form.head_comment.as_hidden }}
-
-                            <div class="col-md-20">
-                                {{ form.body_text }}
-                            </div>
-                            <p><input type="submit" value="Add comment"></p>
-                        </form>
-                        {% endif %}
-
-            </div>
-            <div class="col-md-4">
-                <!-- catagories -->
-                <div class="section-row sticky-container">
-                    <div class="section-title">
-                        <h2>Catagories</h2>
-                    </div>
-                    <div class="category-widget">
-                        <ul>
-                            <li><a href="#" class="cat-1">Web Design<span>340</span></a></li>
-                            <li><a href="#" class="cat-2">JavaScript<span>74</span></a></li>
-                            <li><a href="#" class="cat-4">JQuery<span>41</span></a></li>
-                            <li><a href="#" class="cat-3">CSS<span>35</span></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- /catagories -->
             </div>
             <!-- /reply -->
         </div>
@@ -259,38 +213,4 @@
 
 </body>
 
-
-
-
 {% endblock %}
-
-
-
-
-
-
-
-<!--                 <div class="row">
-                    <div class="col-md-20">
-                        {% if user.is_authenticated %}
-                        {% if new_comment %}
-                        <h2>Your comment has been added.</h2>
-                        {% endif %}
-
-                        <h2>Add a new comment</h2>
-
-                        <form action="." method="post">
-                            {% csrf_token %}
-
-                            {{ form.user_id.as_hidden }} {{ form.created_date.as_hidden }} {{ form.post_id.as_hidden }}
-                            {{ form.is_active.as_hidden }}
-
-                            <div class="col-md-20">
-                                {{ form.body_text }}
-                            </div>
-                            <p><input type="submit" value="Add comment"></p>
-                        </form>
-                        {% endif %}
-                    </div>
-
-                </div> -->
