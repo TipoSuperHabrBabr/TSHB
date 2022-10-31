@@ -10,7 +10,7 @@
     <div class="background-img" style="background-image: url('/media/{{ post.body_image }}');"></div>
     <div class="container">
         <div class="row">
-            <div class="col-md-20">
+            <div class="col-md-10">
                 <div class="post-meta">
                     <a class="post-category cat-2" href="category.html">{{ post.category }}</a>
                     <span class="post-date">{{ post.created_date }}</span>
@@ -21,7 +21,7 @@
     </div>
 </div>
 <!-- /Page Header -->
-</header>
+
 <!-- /Header -->
 
 <!-- section -->
@@ -31,10 +31,14 @@
         <!-- row -->
         <div class="row">
             <!-- Post content -->
-            <div class="col-md-20">
+            <div class="col-md-8">
                 <div class="section-row sticky-container">
                     <div class="main-post">
-                        {{ post.body_text }}
+                        <h3>{{ post.title }}</h3>
+                        <p>{{ post.body_text }}</p>
+                        <figure class="figure-img">
+                            <img class="img-responsive" src="/media/posts/detector.png" alt="">
+                        </figure>
                     </div>
                     <div class="post-shares sticky-shares">
                         <a href="#" class="share-facebook"><i class="fa fa-facebook"></i></a>
@@ -49,18 +53,20 @@
                 <!-- ad -->
                 <div class="section-row text-center">
                     <a href="#" style="display: inline-block;margin: auto;">
-                        <img class="img-responsive" src="../../static/img/ad-2.jpg" alt="">
+                        <img class="img-responsive" src="/static/img/ad-2.jpg" alt="/static/img/ad-2.jpg">
                     </a>
                 </div>
-                <!-- ad -->
+                <!-- /ad -->
                 {% if user.is_authenticated %}
 
                 {% if post.user_id == user_id %}
 
-                <a href="{% url 'blogapp:edit_post' post.id %}" style="margin: 25px"
-                    class="btn btn-primary">Редактировать пост</a>
-                <a href="{% url 'blogapp:delete_post' post.id %}" style="margin: 25px" class="btn btn-primary">Удалить
-                    пост</a>
+                <div class="section-row text-center">
+                    <a href="{% url 'blogapp:edit_post' post.id %}" style="margin: 25px"
+                        class="btn btn-primary">Редактировать пост</a>
+                    <a href="{% url 'blogapp:delete_post' post.id %}" style="margin: 25px" class="btn btn-primary">Удалить
+                        пост</a>
+                </div>    
                 {% endif %}
 
                 {% endif %}
@@ -90,6 +96,37 @@
                     </div>
                 </div>
                 <!-- /author -->
+
+                <!-- add comment -->
+                <div class="section-row">
+                    <div class="section-title">
+                        {% if user.is_authenticated %}
+                        {% if new_comment %}
+                        <h2>Your comment has been added.</h2>
+                        {% endif %}
+
+                        <h2>Добавить новый комментарий.</h2>
+                    </div>
+                    <form class="post-reply" action="." method="post">
+                        <div class="row">
+                        {% csrf_token %}
+
+                        {{ form.user_id.as_hidden }} {{ form.created_date.as_hidden }} {{ form.post_id.as_hidden }}
+                        {{ form.is_active.as_hidden }}
+
+                            <div class="col-md-12">
+                                <div class= "form-group">
+                                   {{ form.body_text }}
+                                </div>
+                                <p><input type="submit" value="Add comment"></p>
+                            </div>
+                        </div>    
+                    </form>
+                        {% endif %}
+                </div>
+
+                <!-- </div> -->
+                <!-- /add comment -->
 
                 <!-- comments -->
                 <div class="section-row">
@@ -128,7 +165,54 @@
 
                 </div>
 
-                <div class="row">
+            </div>
+            <!-- /reply -->
+            <div class="col-md-4">
+                <!-- catagories -->
+                <div class="aside-widget">
+                    <div class="section-title">
+                        <h2>Catagories</h2>
+                    </div>
+                    <div class="category-widget">
+                        <ul>
+                            <li><a href="#" class="cat-1">Web Design<span>340</span></a></li>
+                            <li><a href="#" class="cat-2">JavaScript<span>74</span></a></li>
+                            <li><a href="#" class="cat-4">JQuery<span>41</span></a></li>
+                            <li><a href="#" class="cat-3">CSS<span>35</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /catagories -->
+            </div>    
+        </div>
+
+    </div>
+    <!-- /container -->
+</div>
+<!-- /section -->
+
+<!-- Footer -->
+
+
+<!-- jQuery Plugins -->
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/main.js"></script>
+
+</body>
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+<!--                 <div class="row">
                     <div class="col-md-20">
                         {% if user.is_authenticated %}
                         {% if new_comment %}
@@ -150,32 +234,5 @@
                         </form>
                         {% endif %}
                     </div>
-                </div>
 
-
-            </div>
-            <!-- /reply -->
-        </div>
-        <div>
-
-
-        </div>
-    </div>
-    <!-- /container -->
-</div>
-<!-- /section -->
-
-<!-- Footer -->
-
-
-<!-- jQuery Plugins -->
-<script src="../../static/js/jquery.min.js"></script>
-<script src="../../static/js/bootstrap.min.js"></script>
-<script src="../../static/js/main.js"></script>
-
-</body>
-
-
-
-
-{% endblock %}
+                </div> -->
