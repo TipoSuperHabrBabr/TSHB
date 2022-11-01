@@ -1,3 +1,5 @@
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
 from authapp.models import BlogUser
 from blogapp.forms import CommentForm
 from blogapp.forms import PostForm
@@ -16,13 +18,23 @@ def index(request):
     posts_list = Post.objects.all().order_by('-created_date')
     new_posts_list = Post.objects.all().order_by('-created_date')[0:2]
     old_posts_list = Post.objects.all().order_by('-created_date')[2:9]
+    paginator = Paginator(posts_list, 2)
+
+    page_number = request.GET.get('page')
+    try:
+        page_obj = paginator.page(page_number)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+
 
     return render(request, 'blogapp/index.html',
                   context={
                       'title': 'TipoSuperHabrBabr',
-                      'posts_list': posts_list,
+                      'posts_list': page_obj,
                       'new_posts_list': new_posts_list,
-                      'old_posts_list': old_posts_list
+                      'old_posts_list': old_posts_list,
                   },
                   )
 
@@ -38,14 +50,23 @@ def blog(request):
     category_id = request.GET.get('id')
     current_category = categories[category_id]
     posts_list = Post.objects.filter(category=current_category).order_by('-created_date')
+    paginator = Paginator(posts_list, 2)
+
+    page_number = request.GET.get('page')
+    try:
+        page_obj = paginator.page(page_number)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
 
     context = {
         'categories': categories,
         'current_category': current_category,
         'title': current_category,
-        'posts_list': posts_list,
+        'posts_list': page_obj,
+        'category_id': category_id,
     }
-
     return render(request, 'blogapp/blog.html', context)
 
 
