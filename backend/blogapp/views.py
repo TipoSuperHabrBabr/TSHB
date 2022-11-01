@@ -18,7 +18,7 @@ def index(request):
     posts_list = Post.objects.all().order_by('-created_date')
     new_posts_list = Post.objects.all().order_by('-created_date')[0:2]
     old_posts_list = Post.objects.all().order_by('-created_date')[2:9]
-    paginator = Paginator(posts_list, 2)
+    paginator = Paginator(old_posts_list, 6)
 
     page_number = request.GET.get('page')
     try:
@@ -32,9 +32,9 @@ def index(request):
     return render(request, 'blogapp/index.html',
                   context={
                       'title': 'TipoSuperHabrBabr',
-                      'posts_list': page_obj,
+                      'posts_list': posts_list,
                       'new_posts_list': new_posts_list,
-                      'old_posts_list': old_posts_list,
+                      'old_posts_list': page_obj,
                   },
                   )
 

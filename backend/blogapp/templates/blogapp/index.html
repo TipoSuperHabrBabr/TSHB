@@ -12,7 +12,7 @@
             <div class="row">
                 <!-- Тут 2 поста самых свежих через цикл -->
                 <!-- post -->
-                {% for post in posts_list %}
+                {% for post in new_posts_list %}
                     <div class="col-md-6">
                         <div class="post post-thumb">
                             <a class="post-img" href="{% url 'blogapp:read_post' post.id %}"> <img
@@ -29,23 +29,7 @@
                         </div>
                     </div>
                 {% endfor %}
-                <div class="pagination">
-                    <span class="step-links">
-                        {% if posts_list.has_previous %}
-                            <a href="?page=1">&laquo; Первая</a>
-                            <a href="?page={{ posts_list.previous_page_number }}">Предыдущая</a>
-                        {% endif %}
 
-                        <span class="current">
-                            Страница {{ posts_list.number }} из {{ posts_list.paginator.num_pages }}.
-                        </span>
-
-                        {% if posts_list.has_next %}
-                            <a href="?page={{ posts_list.next_page_number }}">Следующая</a>
-                            <a href="?page={{ posts_list.paginator.num_pages }}">Последняя &raquo;</a>
-                        {% endif %}
-                    </span>
-                </div>
 
                 <!-- /post -->
             </div>
@@ -76,6 +60,24 @@
                         </div>
                     </div>
                 {% endfor %}
+
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if old_posts_list.has_previous %}
+                            <a href="?page=1">&laquo; Первая</a>
+                            <a href="?page={{ old_posts_list.previous_page_number }}">Предыдущая</a>
+                        {% endif %}
+
+                        <span class="current">
+                            Страница {{ old_posts_list.number }} из {{ old_posts_list.paginator.num_pages }}.
+                        </span>
+
+                        {% if old_posts_list.has_next %}
+                            <a href="?page={{ old_posts_list.next_page_number }}">Следующая</a>
+                            <a href="?page={{ old_posts_list.paginator.num_pages }}">Последняя &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
             </div>
         </div>
         <!-- /container -->
