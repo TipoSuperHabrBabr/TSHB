@@ -20,7 +20,7 @@
                 {% for post in new_posts_list %}
                     <div class="col-md-4">
                         <div class="post post-thumb">
-                            <a class="post-img" href="{% url 'blogapp:read_post' post.id %}"> <img
+                            <a class="post-img-main" href="{% url 'blogapp:read_post' post.id %}"> <img
                                     src="/media/{{ post.body_image|default:'default_images/default-post.jpg' }}" alt="null"></a>
                             <div class="post-body">
                                 <div class="post-meta">
@@ -51,7 +51,7 @@
                 {% for post in old_posts_list %}
                     <div class="col-md-4">
                         <div class="post post-thumb">
-                            <a class="post-img" href="{% url 'blogapp:read_post' post.id %}"> <img
+                            <a class="post-img-main" href="{% url 'blogapp:read_post' post.id %}"> <img
                                     src="/media/{{ post.body_image|default:'default_images/default-post.jpg' }}" alt="null"></a>
                             <div class="post-body">
                                 <div class="post-meta">

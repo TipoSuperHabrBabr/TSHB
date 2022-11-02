@@ -395,8 +395,8 @@ textarea.input {
 \*----------------------------*/
 
 .box {
-    width: 500px;
-    height: 300px;
+    width: 170px;
+    height: 170px;
     margin: 0;
 }
 
@@ -644,6 +644,10 @@ textarea.input {
 
 .post .post-img>img {
     width: 100%;
+}
+
+.post .post-img-main>img {
+    width: 100%;
     height: 350px;
     width: 350px;
 }
@@ -784,8 +788,9 @@ textarea.input {
 }
 
 .post.post-row .post-img {
-    width: 40%;
     float: left;
+    width: 350px;
+    height: 350px;
 }
 
 .post.post-row .post-body {

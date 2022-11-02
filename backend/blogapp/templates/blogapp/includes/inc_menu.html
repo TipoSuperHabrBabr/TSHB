@@ -44,51 +44,32 @@
                 <ul class="nav-aside-menu">
                     <li><a href="{% url 'index' %}">Главная</a></li>
                     {% if user.is_authenticated %}
+                        <li><a href="{% url 'blogapp:create_post' %}">Создать статью</a></li>
                         <li><a href="{% url 'auth:user_read' user.id %}">Личный кабинет</a></li>
                         <li><a href="{% url 'auth:logout' %}">Выйти</a></li>
                     {% else %}
                         <li><a href="{% url 'auth:login' %}">Войти</a></li>
                         <li><a href="{% url 'auth:register' %}">Регистрация</a></li>
                     {% endif %}
-                    <li><a href="#">Advertisement</a></li>
-                    <li><a href="contact.html">Контакты</a></li>
                 </ul>
             </div>
             <!-- /nav -->
-            <div class="section-row">
-                {% if user.is_authenticated %}
-                    <a href="{% url 'blogapp:create_post' %}" style="margin: 25px" class="btn btn-danger">Создать
-                        статью</a>
-                {% endif %}
-            </div>
 
 
             <!-- widget posts -->
             <div class="section-row">
                 <h3>Свежие публикации</h3>
-                <div class="post post-widget">
-                    <a class="post-img" href="blog-post.html"><img src="{% static 'img/widget-2.jpg' %}" alt=""></a>
-                    <div class="post-body">
-                        <h3 class="post-title"><a href="blog-post.html">Pagedraw UI Builder Turns Your Website Design
-                            Mockup Into Code Automatically</a></h3>
-                    </div>
-                </div>
 
+                {% for post in new_posts_list %}
                 <div class="post post-widget">
-                    <a class="post-img" href="blog-post.html"><img src="../../static/img/widget-3.jpg" alt=""></a>
+                    <a class="post-img" href="{% url 'blogapp:read_post' post.id %}"><img src="/media/{{ post.body_image|default:'default_images/default-post.jpg' }}" alt=""></a>
                     <div class="post-body">
-                        <h3 class="post-title"><a href="blog-post.html">Why Node.js Is The Coolest Kid On The Backend
-                            Development Block!</a></h3>
+                        <h3 class="post-title"><a href="blog-post.html">{{ post.title }}</a></h3>
                     </div>
                 </div>
+                {% endfor %}
 
-                <div class="post post-widget">
-                    <a class="post-img" href="blog-post.html"><img src="../../static/img/widget-4.jpg" alt=""></a>
-                    <div class="post-body">
-                        <h3 class="post-title"><a href="blog-post.html">Tell-A-Tool: Guide To Web Design And Development
-                            Tools</a></h3>
-                    </div>
-                </div>
+
             </div>
             <!-- /widget posts -->
 
