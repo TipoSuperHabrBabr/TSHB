@@ -10,12 +10,17 @@
     <div class="container">
         <!-- row -->
             <div class="row">
+                <div class="col-md-12">
+                    <div class="section-title">
+                        <h2>{{ current_category }}</h2>
+                    </div>
+                </div>
                 <!-- post -->
                 {% for post in posts_list %}
-                <div class="col-md-12" style="margin-top: 0px">
+                <div class="col-md-12">
                     <div class="post post-row">
                         <a class="post-img" href="{% url 'blogapp:read_post' post.id %}"> <img
-                                alt="" src="/media/{{ post.body_image }}"></a>
+                                alt="" src="/media/{{ post.body_image|default:'default_images/default-post.jpg' }}"></a>
                         <div class="post-body">
                             <div class="post-meta">
                                 <a class="post-category cat-2" href="">{{ post.category }}</a>
@@ -27,6 +32,7 @@
                                 {{ post.body_text }}</p>
                         </div>
                     </div>
+                </div>
                         <!-- /post -->
                 {% endfor %}
                 </div>

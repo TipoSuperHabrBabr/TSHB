@@ -15,9 +15,9 @@ from django.views.generic import CreateView, UpdateView
 
 def index(request):
     posts_list = Post.objects.all().order_by('-created_date')
-    new_posts_list = Post.objects.all().order_by('-created_date')[0:2]
-    old_posts_list = Post.objects.all().order_by('-created_date')[2:]
-    paginator = Paginator(old_posts_list, 6)
+    new_posts_list = Post.objects.all().order_by('-created_date')[0:3]
+    old_posts_list = Post.objects.all().order_by('-created_date')[3:]
+    paginator = Paginator(old_posts_list, 9)
 
     page_number = request.GET.get('page')
     try:
@@ -26,7 +26,6 @@ def index(request):
         page_obj = paginator.page(1)
     except EmptyPage:
         page_obj = paginator.page(paginator.num_pages)
-
 
     return render(request, 'blogapp/index.html',
                   context={
@@ -49,7 +48,7 @@ def blog(request):
     category_id = request.GET.get('id')
     current_category = categories[category_id]
     posts_list = Post.objects.filter(category=current_category).order_by('-created_date')
-    paginator = Paginator(posts_list, 2)
+    paginator = Paginator(posts_list, 6)
 
     page_number = request.GET.get('page')
     try:
@@ -133,7 +132,8 @@ def edit_post(request, pk):
     if request.user == post.user_id or request.user.is_moderator or request.user.is_superuser and post.is_active:
 
         if request.method == 'POST':
-            form = PostForm(request.POST or None, instance=post)
+
+            form = PostForm(request.POST, request.FILES or None, instance=post)
             if form.is_valid():
                 form.save()
                 post.edit_date = timezone.now()
@@ -141,7 +141,6 @@ def edit_post(request, pk):
                 return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
         else:
-
             form = PostForm(request.POST or None, instance=post)
 
         content = {

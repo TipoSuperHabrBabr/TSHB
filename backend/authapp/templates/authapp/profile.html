@@ -9,7 +9,7 @@
 
       Пользователь<strong>{{ user_read.first_name|title }} -
         {{ user_read.username|title }}</strong>
-      <div class="box"><img src="/media/{{ user_read.avatar|default:'users_avatars/default.jpg' }}"
+      <div class="box"><img src="/media/{{ user_read.avatar|default:'default_images/default-avatar.jpg' }}"
           alt="{{ user_read.username }}"></div>
       <div class="post">
         <b>О себе</b>
