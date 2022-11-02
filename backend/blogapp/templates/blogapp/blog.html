@@ -9,11 +9,10 @@
     <!-- container -->
     <div class="container">
         <!-- row -->
-        <div class="row">
             <div class="row">
                 <!-- post -->
                 {% for post in posts_list %}
-                <div class="col-md-12">
+                <div class="col-md-12" style="margin-top: 0px">
                     <div class="post post-row">
                         <a class="post-img" href="{% url 'blogapp:read_post' post.id %}"> <img
                                 alt="" src="/media/{{ post.body_image }}"></a>
@@ -27,9 +26,10 @@
                             <p style="display: block; height: 140px; width: auto; overflow: hidden; text-overflow: ellipsis">
                                 {{ post.body_text }}</p>
                         </div>
+                    </div>
                         <!-- /post -->
                 {% endfor %}
-            </div>
+                </div>
                 <div class="pagination">
                     <span class="step-links">
                         {% if posts_list.has_previous %}
@@ -47,7 +47,7 @@
                         {% endif %}
                     </span>
                 </div>
-        </div>
+            </div>
         <!-- /row -->
     </div>
     <!-- /container -->
