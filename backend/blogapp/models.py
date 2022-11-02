@@ -1,3 +1,5 @@
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils import timezone
 
@@ -21,6 +23,7 @@ class Post(models.Model):
     edit_date = models.DateTimeField(default=timezone.now)
     tags = models.CharField(max_length=250, blank=True)
     is_active = models.BooleanField(default=True)
+    is_like = GenericRelation('Like')
 
     def delete(self, *args, **kwargs):
         self.is_active = False
@@ -35,7 +38,22 @@ class Comment(models.Model):
     is_active = models.BooleanField(default=True)
     parent_comment_id = models.IntegerField(default=0)
     head_comment = models.BooleanField(default=True)
+    is_like = GenericRelation('Like')
 
     def delete(self, *args, **kwargs):
         self.is_active = False
         self.save()
+
+    @property
+    def total_likes(self):
+        return self.is_like.count()
+
+
+class Like(models.Model):
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    liked = models.BooleanField()
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+    parent_object = models.IntegerField(default=0)
+    created_date = models.DateTimeField(auto_now_add=True)

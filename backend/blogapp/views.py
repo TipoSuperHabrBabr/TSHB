@@ -1,9 +1,8 @@
 from authapp.models import BlogUser
-from blogapp.forms import CommentForm
-from blogapp.forms import PostForm
-from blogapp.models import Comment
-from blogapp.models import Post
+from blogapp.forms import CommentForm, PostForm
+from blogapp.models import Post, Like, Comment
 from django.contrib.auth.decorators import login_required
+from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
@@ -54,6 +53,10 @@ def post_detail(request, pk):
     comments = Comment.objects.filter(post_id=pk, is_active=True).order_by('parent_comment_id')
     user_id = request.user
     new_comment = None
+    model_type_posts = ContentType.objects.get_for_model(Post)
+    model_type_commets = ContentType.objects.get_for_model(Comment)
+    like_posts = Like.objects.filter(content_type=model_type_posts, object_id=pk, liked=True)
+    like_commets = Like.objects.filter(content_type=model_type_commets, parent_object=pk, liked=True)
 
     if request.method == 'POST':
         comment_form = CommentForm(data=request.POST)
@@ -76,6 +79,8 @@ def post_detail(request, pk):
                    'comments': comments,
                    'new_comment': new_comment,
                    'form': comment_form,
+                   'like_posts': like_posts,
+                   'like_commets': like_commets,
                    }
                   )
 
@@ -102,67 +107,72 @@ class PostCreateView(CreateView):
 @login_required
 def edit_post(request, pk):
     post = Post.objects.get(id=pk)
-    if request.user != post.user_id or post.is_active is not True:  # проверяем доступ юзера и статус поста
-        return HttpResponseForbidden('Permission Error')
 
-    if request.method == 'POST':
+    # проверяем права юзера и статус поста
+    if request.user == post.user_id or request.user.is_moderator or request.user.is_superuser and post.is_active:
 
-        form = PostForm(request.POST or None, instance=post)
-        if form.is_valid():
-            form.save()
-            post.edit_date = timezone.now()
-            post.save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-    else:
-        form = PostForm(request.POST or None, instance=post)
+        if request.method == 'POST':
+            form = PostForm(request.POST or None, instance=post)
+            if form.is_valid():
+                form.save()
+                post.edit_date = timezone.now()
+                post.save()
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-    content = {
-        'title': 'Редактирование статьи',
-        'form': form,
-        'post': post,
-        'user': request.user
-    }
-    return render(request, 'blogapp/edit_post.html', content)
+        else:
+
+            form = PostForm(request.POST or None, instance=post)
+
+        content = {
+            'title': 'Редактирование статьи',
+            'form': form,
+            'post': post,
+            'user': request.user
+        }
+        return render(request, 'blogapp/edit_post.html', content)
+
+    return HttpResponseForbidden('Permission Error')
 
 
 @login_required
 def delete_post(request, pk):
     post = Post.objects.get(id=pk)
 
-    if request.user != post.user_id or post.is_active is not True:  # проверяем доступ юзера и статус поста
-        return HttpResponseForbidden('Permission Error')
+    if request.user == post.user_id or request.user.is_moderator or request.user.is_superuser and post.is_active:
+        if request.method == "POST":
+            post.delete()
+            return HttpResponseRedirect(reverse('index'))
 
-    if request.method == "POST":
-        post.delete()
-        return HttpResponseRedirect(reverse('index'))
+        context = {
+            'object': post,
+            'user': request.user
+        }
+        return render(request, 'blogapp/post_confirm_delete.html', context)
 
-    context = {
-        'object': post,
-        'user': request.user
-    }
-    return render(request, 'blogapp/post_confirm_delete.html', context)
+    return HttpResponseForbidden('Permission Error')
 
 
 @login_required
 def delete_comment(request, pk):
     comment = Comment.objects.get(id=pk)
 
-    if request.user != comment.user_id or comment.is_active is not True:  # проверяем доступ юзера и статус поста
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    if request.user == comment.user_id or request.user.is_moderator or request.user.is_superuser and comment.is_active:
+        if comment.head_comment:
+            # при удалении головного комментария удаляем его и все подкомментарии
+            comments = Comment.objects.filter(parent_comment_id=pk)
+            for comment in comments:
+                comment.delete()
+        else:
+            # иначе удалем только один подкомментарий
+            comment.delete()
+
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     # selected_comment = get_object_or_404(Comment, id=pk)
     # selected_comment.delete()
 
-    if comment.head_comment:
-        # при удалении головного комментария удаляем его и все подкомментарии
-        comments = Comment.objects.filter(parent_comment_id=pk)
-        for comment in comments:
-            comment.delete()
-    else:
-        # иначе удалем только один подкомментарий
-        comment.delete()
 
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @login_required
@@ -194,7 +204,6 @@ def comment_reply(request, pk):
     return render(request, 'blogapp/comment_reply.html', context)
 
 
-
 @method_decorator(login_required, name='dispatch')
 class CommentUpdateView(UpdateView):
     model = Comment
@@ -202,5 +211,18 @@ class CommentUpdateView(UpdateView):
     template_name = 'blogapp/edit_comment.html'
 
     def get_success_url(self, **kwargs):
-        # print(self.kwargs['pk'])
         return reverse('blogapp:read_post', kwargs=dict(pk=self.kwargs['pkp']))
+
+
+@login_required
+def like(request, obj, pk, pkc):
+    user = request.user
+    obj = globals().get(obj)
+    model_type = ContentType.objects.get_for_model(model=obj)
+    try:
+        like = Like.objects.get(content_type=model_type, object_id=pkc, parent_object=pk, user_id=user)
+        like.delete()
+    except:
+        Like.objects.create(content_type=model_type, object_id=pkc, user_id=user, parent_object=pk, liked=True)
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
