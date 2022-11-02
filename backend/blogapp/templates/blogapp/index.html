@@ -1,0 +1,182 @@
+{% extends 'blogapp/base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <!-- Тут 2 поста самых свежих через цикл -->
+                <!-- post -->
+                {% for post in new_posts_list %}
+                    <div class="col-md-6">
+                        <div class="post post-thumb">
+                            <a class="post-img" href="{% url 'blogapp:read_post' post.id %}"> <img
+                                    src="/media/{{ post.body_image }}" alt=""></a>
+                            <div class="post-body">
+                                <div class="post-meta">
+                                    <a class="post-category cat-2" href="">{{ post.category }}</a>
+                                    <span class="post-date">{{ post.created_date }}</span>
+                                </div>
+                                <h3 class="post-title"><a
+                                        href="{% url 'blogapp:read_post' post.id %}">{{ post.title }}</a></h3>
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+                <!-- /post -->
+            </div>
+            <!-- /row -->
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-title">
+                        <h2>Свежие публикации</h2>
+                    </div>
+                </div>
+                <!-- Тут 6 свежих постов после двух предыдущих -->
+                <!-- post -->
+                {% for post in old_posts_list %}
+                    <div class="col-md-4">
+                        <div class="post post-thumb">
+                            <a class="post-img" href="{% url 'blogapp:read_post' post.id %}"> <img
+                                    src="/media/{{ post.body_image }}" alt=""></a>
+                            <div class="post-body">
+                                <div class="post-meta">
+                                    <a class="post-category cat-2" href="">{{ post.category }}</a>
+                                    <span class="post-date">{{ post.created_date }}</span>
+                                </div>
+                                <h3 class="post-title"><a
+                                        href="{% url 'blogapp:read_post' post.id %}">{{ post.title }}</a></h3>
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if old_posts_list.has_previous %}
+                            <a href="?page=1">&laquo; Первая</a>
+                            <a href="?page={{ old_posts_list.previous_page_number }}">Предыдущая</a>
+                        {% endif %}
+
+                        <span class="current">
+                            Страница {{ old_posts_list.number }} из {{ old_posts_list.paginator.num_pages }}.
+                        </span>
+
+                        {% if old_posts_list.has_next %}
+                            <a href="?page={{ old_posts_list.next_page_number }}">Следующая</a>
+                            <a href="?page={{ old_posts_list.paginator.num_pages }}">Последняя &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="section-title">
+                                <h2>Most Read</h2>
+                            </div>
+                        </div>
+                        <!-- Тут 4 самых залайканных поста -->
+                        <!-- Пока костыль, ак как еще не реализованны лайки -->
+                        <!-- post -->
+                        {% for post in posts_list %}
+                            <div class="col-md-4">
+                                <div class="post post-thumb">
+                                    <a class="post-img" href="{% url 'blogapp:read_post' post.id %}"> <img
+                                            src="/media/{{ post.body_image }}" alt=""></a>
+                                    <div class="post-body">
+                                        <div class="post-meta">
+                                            <a class="post-category cat-2" href="">{{ post.category }}</a>
+                                            <span class="post-date">{{ post.created_date }}</span>
+                                        </div>
+                                        <h3 class="post-title"><a
+                                                href="{% url 'blogapp:read_post' post.id %}">{{ post.title }}</a></h3>
+
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <!-- /post -->
+
+                        <div class="col-md-12">
+                            <div class="section-row">
+                                <button class="primary-button center-block">Load More</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- ad -->
+                    <div class="aside-widget text-center">
+                        <a href="#" style="display: inline-block;margin: auto;">
+                            <img class="img-responsive" src="../../static/img/ad-1.jpg" alt="">
+                        </a>
+                    </div>
+                    <!-- /ad -->
+
+                    <!-- catagories -->
+                    <div class="aside-widget">
+                        <div class="section-title">
+                            <h2>Catagories</h2>
+                        </div>
+                        <div class="category-widget">
+                            <ul>
+                                <li class="cat-1"><a href="{% url 'blog:category' %}?id=1">Дизайн</a></li>
+                                <li class="cat-2"><a href="{% url 'blog:category' %}?id=2">Веб-разработка</a></li>
+                                <li class="cat-3"><a href="{% url 'blog:category' %}?id=3">Мобильная разработка</a></li>
+                                <li class="cat-4"><a href="{% url 'blog:category' %}?id=4">Маркетинг</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /catagories -->
+
+                    <!-- tags -->
+                    <div class="aside-widget">
+                        <div class="tags-widget">
+                            <ul>
+                                <li><a href="#">Chrome</a></li>
+                                <li><a href="#">CSS</a></li>
+                                <li><a href="#">Tutorial</a></li>
+                                <li><a href="#">Backend</a></li>
+                                <li><a href="#">JQuery</a></li>
+                                <li><a href="#">Design</a></li>
+                                <li><a href="#">Development</a></li>
+                                <li><a href="#">JavaScript</a></li>
+                                <li><a href="#">Website</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /tags -->
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+{% endblock %}
+
+
+

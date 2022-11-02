@@ -1,0 +1,39 @@
+{% extends 'authapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="section">
+  <!-- container -->
+  <div class="container">
+    <div class="row">
+
+      Пользователь<strong>{{ object.category.first_name|title }} -
+        {{ object.username|title }}</strong><br>
+      {% if user.is_moderator %}
+      Вы являетесь модератором. <br>
+      {% endif %}
+      <div class="box">
+        <img src="/media/{{ object.avatar|default:'users_avatars/default.jpg' }}" alt="{{ object.username }}">
+      </div>
+      <div class="post">
+        <b>О себе</b>
+        <p>{{ object.about_me }}</p>
+        <b>Пол</b>
+        <p>{{ object.gender }}</p>
+        <b>Электронная почта</b>
+        <p>{{ object.email }}</p>
+        <p>
+          <button>
+            <a href={% url 'auth:edit' %}>
+              Редактировать
+            </a>
+          </button>
+          <button>
+            <a href={% url 'index' %}>
+              На главную
+            </a>
+          </button>
+        </p>
+      </div>
+    </div>
+    {% endblock %}
