@@ -4,9 +4,8 @@
 {% block content %}
 
 
-
 <!-- Page Header -->
-<div id="post-header" class="page-header">
+<div class="page-header" id="post-header">
     <div class="background-img" style="background-image: url('/media/{{ post.body_image }}');"></div>
     <div class="container">
         <div class="row">
@@ -37,45 +36,57 @@
                         <h3>{{ post.title }}</h3>
                         <p>{{ post.body_text }}</p>
                         <figure class="figure-img">
-                            <img class="img-responsive" src="/media/posts/detector.png" alt="">
+                            <img alt="" class="img-responsive" src="/media/posts/detector.png">
                         </figure>
                     </div>
                     <div class="post-shares sticky-shares">
-                        <a href="#" class="share-facebook"><i class="fa fa-facebook"></i></a>
-                        <a href="#" class="share-twitter"><i class="fa fa-twitter"></i></a>
-                        <a href="#" class="share-google-plus"><i class="fa fa-google-plus"></i></a>
-                        <a href="#" class="share-pinterest"><i class="fa fa-pinterest"></i></a>
-                        <a href="#" class="share-linkedin"><i class="fa fa-linkedin"></i></a>
+                        <a class="share-facebook" href="#"><i class="fa fa-facebook"></i></a>
+                        <a class="share-twitter" href="#"><i class="fa fa-twitter"></i></a>
+                        <a class="share-google-plus" href="#"><i class="fa fa-google-plus"></i></a>
+                        <a class="share-pinterest" href="#"><i class="fa fa-pinterest"></i></a>
+                        <a class="share-linkedin" href="#"><i class="fa fa-linkedin"></i></a>
                         <a href="#"><i class="fa fa-envelope"></i></a>
                     </div>
                 </div>
+
+                {% if user.is_authenticated %}
+                <a href="{% url 'blogapp:like' 'Post' post.id post.id%}"
+                   style="margin: 125px">Like
+                    <span class="badge rounded-pill">
+
+                                                 <span class="visually-hidden">{{like_posts.count}}</span>
+                                      </span>
+                </a>
+                {% endif %}
+
                 <!-- ad -->
                 <div class="section-row text-center">
                     <a href="#" style="display: inline-block;margin: auto;">
-                        <img class="img-responsive" src="/static/img/ad-2.jpg" alt="/static/img/ad-2.jpg">
+                        <img alt="/static/img/ad-2.jpg" class="img-responsive" src="/static/img/ad-2.jpg">
                     </a>
                 </div>
                 <!-- /ad -->
+
+
                 {% if user.is_authenticated %}
-
-                {% if post.user_id == user_id %}
-
+                {% if post.user_id == user_id or user_id.is_superuser or user_id.is_moderator %}
                 <div class="section-row text-center">
-                    <a href="{% url 'blogapp:edit_post' post.id %}" style="margin: 25px"
-                        class="btn btn-primary">Редактировать пост</a>
-                    <a href="{% url 'blogapp:delete_post' post.id %}" style="margin: 25px" class="btn btn-primary">Удалить
+                    <a class="btn btn-primary" href="{% url 'blogapp:edit_post' post.id %}"
+                       style="margin: 25px">Редактировать пост</a>
+                    <a class="btn btn-primary" href="{% url 'blogapp:delete_post' post.id %}" style="margin: 25px">Удалить
                         пост</a>
                 </div>
 
-                {% endif %}
 
                 {% endif %}
+                {% endif %}
+
                 <!-- author -->
                 <div class="section-row">
                     <div class="post-author">
                         <div class="media">
                             <div class="media-left">
-                                <img class="media-object" src="/media/{{ post.user_id.avatar }}" alt="">
+                                <img alt="" class="media-object" src="/media/{{ post.user_id.avatar }}">
                             </div>
                             <div class="media-body">
                                 {% if user.is_authenticated %}
@@ -129,62 +140,91 @@
                         <h2>{{ comments.count }} comments</h2>
                     </div>
                     {% for comment in comments %}
+
+
                     <div class="post-comments">
 
                         <div class="media">
                             <div class="media-left">
-                                <img class="media-object" src="/media/{{ comment.user_id.avatar }}" alt="">
+                                <img alt="" class="media-object" src="/media/{{ comment.user_id.avatar }}">
                             </div>
 
                             {% if comment.head_comment %}
                             <div class="media-body">
                                 <div class="media-heading">
-                                    <h4>{{ comment.user_id }} (comment_id={{ comment.id }})</h4>
+                                    <h4>{{ comment.user_id }} </h4>
 
                                     <span class="time">{{ comment.created_date }}</span>
                                     {% if user.is_authenticated %}
 
 
                                     <!-- отвечать можно только на основной комментарий -->
-                                    <a href="{% url 'blogapp:comment_reply' comment.id %}" class="reply">
+                                    <a class="reply" href="{% url 'blogapp:comment_reply' comment.id %}">
                                         Reply
                                     </a>
 
-
-                                    {% if comment.user_id == user_id %}
-                                    <a href="{% url 'blogapp:comment_delete' comment.id %}" class="reply">
+                                    {% if comment.user_id == user_id or user_id.is_superuser or user_id.is_moderator %}
+                                    <a class="reply" href="{% url 'blogapp:comment_delete' comment.id %}">
                                         Delete
                                     </a>
-                                    <a href="{% url 'blogapp:comment_update' comment.id post.id %}" class="reply">
+                                    <a class="reply" href="{% url 'blogapp:comment_update' comment.id post.id %}">
                                         Update
                                     </a>
                                     {% endif %}
 
                                     {% endif %}
+                                    {% if user.is_authenticated %}
+
+
+                                    <a href="{% url 'blogapp:like' 'Comment' post.id comment.id %}"
+                                       style="margin: 25px">Likes
+                                        <span class="badge rounded-pill">
+
+                                            <span class="visually-hidden">{{comment.total_likes}}</span>
+                                          </span>
+                                    </a>
+
+
+                                    {% endif %}
+
+
                                 </div>
                                 <p>{{ comment.body_text }}</p>
                             </div>
                             {% else %}
                             <div class="media-body">
                                 <div class="media-heading-reply">
-                                    <h5>{{ comment.user_id }} (comment_id={{ comment.id }})</h5>
+                                    <h5>{{ comment.user_id }}</h5>
 
                                     <span class="time">{{ comment.created_date }}</span>
                                     {% if user.is_authenticated %}
 
-                                    {% if comment.user_id == user_id %}
-                                    <a href="{% url 'blogapp:comment_delete' comment.id %}" class="reply">
+                                    {% if comment.user_id == user_id or user_id.is_superuser or user_id.is_moderator %}
+                                    <a class="reply" href="{% url 'blogapp:comment_delete' comment.id %}">
                                         Delete
                                     </a>
-                                    <a href="{% url 'blogapp:comment_update' comment.id post.id %}" class="reply">
+                                    <a class="reply" href="{% url 'blogapp:comment_update' comment.id post.id %}">
                                         Update
                                     </a>
                                     {% endif %}
 
+
+                                    <a href="{% url 'blogapp:like' 'Comment' post.id comment.id %}"
+                                       style="margin: 25px">Like
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+
+                                                <span class="visually-hidden">{{comment.total_likes}}</span>
+                                            </span>
+                                    </a>
+
+
                                     {% endif %}
+
+
                                     <p>{{ comment.body_text }}</p>
                                 </div>
                             </div>
+
                             {% endif %}
 
                         </div>

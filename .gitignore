@@ -132,5 +132,6 @@ dmypy.json
 !**/migrations
 !**/migrations/__init__.py
 
-backend/media
+backend/media/
+
 
