@@ -784,13 +784,14 @@ textarea.input {
 .post.post-row:after {
     content: '';
     display: block;
-    clear: both;
 }
 
 .post.post-row .post-img {
     float: left;
     width: 350px;
     height: 350px;
+    overflow: hidden;
+    margin-top: 15px;
 }
 
 .post.post-row .post-body {
