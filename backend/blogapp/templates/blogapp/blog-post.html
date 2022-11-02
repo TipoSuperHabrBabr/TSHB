@@ -39,14 +39,19 @@
                         </figure>
                     </div>
                     {% if user.is_authenticated %}
-                    {% if post.user_id == user_id or user_id.is_superuser or user_id.is_moderator %}
-                    <div class="post-shares sticky-shares">
-                        <a href="{% url 'blogapp:edit_post' post.id %}"><i class="fa fa-pencil"></i></a>
-                        <a href="{% url 'blogapp:delete_post' post.id %}"><i class="fa fa-trash"></i></a>
-                    {% endif %}
-                        <a href="{% url 'blogapp:like' 'Post' post.id post.id%}"><i class="fa fa-thumbs-up"></i></a>
-                        <a>{{like_posts.count}}</a>
-                    </div>
+                        {% if post.user_id == user_id or user_id.is_superuser or user_id.is_moderator %}
+                        <div class="post-shares sticky-shares">
+                            <a href="{% url 'blogapp:edit_post' post.id %}"><i class="fa fa-pencil"></i></a>
+                            <a href="{% url 'blogapp:delete_post' post.id %}"><i class="fa fa-trash"></i></a>
+                            <a href="{% url 'blogapp:like' 'Post' post.id post.id%}"><i class="fa fa-thumbs-up"></i></a>
+                            <a>{{like_posts.count}}</a>
+                        </div>
+                        {% else %}
+                        <div class="post-shares sticky-shares">
+                            <a><i class="fa fa-thumbs-up"></i></a>
+                            <a>{{like_posts.count}}</a>
+                        </div>
+                        {% endif %}
                     {% endif %}
                 </div>
 
