@@ -125,6 +125,7 @@ def edit(request):
     }
     return render(request, 'authapp/edit.html', content)
 
+
 class UserDetailView(DetailView):
     model = BlogUser
     template_name = 'authapp/user_read.html'

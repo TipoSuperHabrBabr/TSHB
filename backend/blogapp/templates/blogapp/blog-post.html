@@ -6,7 +6,7 @@
 
 <!-- Page Header -->
 <div class="page-header" id="post-header">
-    <div class="background-img" style="background-image: url('/media/{{ post.body_image }}');"></div>
+    <div class="background-img" style="background-image: url('/media/{{ post.body_image|default:'default_images/default-post.jpg' }}');"></div>
     <div class="container">
         <div class="row">
             <div class="col-md-10" style="margin-bottom: -40px">
