@@ -77,7 +77,7 @@
                                 <!-- /tags -->
                                 <div class="media-heading" style="margin-top: 32px;">
                                     <div class="media-left">
-                                    <a class="post-img" href="{% url 'auth:profile' post.user_id.id %}"> <img
+                                    <a class="post-img" href="{% url 'auth:profile' post.user_id.id %}" style="text-decoration: none;"> <img
                                         src="/media/{{ post.user_id.avatar|default:'default_images/default-avatar.png' }}" alt=""  style="height: 64px; width: 64px; object-fit: cover; border-radius: 60px;"> {{ post.user_id }}  (перейти в профиль)</a>
                                     </div>
                                 </div>
