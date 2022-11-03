@@ -646,11 +646,17 @@ textarea.input {
     width: 100%;
 }
 
+.post .post-img-top>img {
+     height: 350px;
+     width: 350px;
+}
+
 .post .post-img-main>img {
     width: 100%;
     height: 350px;
     width: 350px;
 }
+
 
 .post .post-meta {
     margin-top: 15px;
@@ -792,6 +798,7 @@ textarea.input {
     height: 350px;
     overflow: hidden;
     margin-top: 15px;
+    object-fit: cover;
 }
 
 .post.post-row .post-body {
@@ -935,6 +942,14 @@ textarea.input {
     color: #a7b3c6;
     -webkit-transition: 0.2s color;
     transition: 0.2s color;
+}
+
+.media-heading-reply .sub-comment {
+
+    margin-top: 5px;
+    font-size: 16px;
+    color: #000000;
+
 }
 
 .post-comments .media .media-body .media-heading h4 {

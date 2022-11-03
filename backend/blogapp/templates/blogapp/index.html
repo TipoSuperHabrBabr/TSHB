@@ -18,10 +18,10 @@
                 <!-- Тут 2 поста самых свежих через цикл -->
                 <!-- post -->
                 {% for post in new_posts_list %}
-                    <div class="col-md-4">
+                    <div class="col-md-4" style="float: left; width: 580px; height: 350px; margin-bottom: 25px; margin-top: -15px;">
                         <div class="post post-thumb">
-                            <a class="post-img-main" href="{% url 'blogapp:read_post' post.id %}"> <img
-                                    src="/media/{{ post.body_image|default:'default_images/default-post.jpg' }}" alt="null"></a>
+                            <a class="post-img" href="{% url 'blogapp:read_post' post.id %}"> <img
+                                    src="/media/{{ post.body_image|default:'default_images/default-post.jpg' }}" style="height: 350px; object-fit: cover;" alt="null"></a>
                             <div class="post-body">
                                 <div class="post-meta">
                                     <a class="post-category cat-2" href="">{{ post.category }}</a>
@@ -29,7 +29,6 @@
                                 </div>
                                 <h3 class="post-title"><a
                                         href="{% url 'blogapp:read_post' post.id %}">{{ post.title }}</a></h3>
-
                             </div>
                         </div>
                     </div>
@@ -51,7 +50,7 @@
                 {% for post in old_posts_list %}
                     <div class="col-md-4">
                         <div class="post post-thumb">
-                            <a class="post-img-main" href="{% url 'blogapp:read_post' post.id %}"> <img
+                            <a class="post-img-main" href="{% url 'blogapp:read_post' post.id %}" style="height: 350px; width: 350px;"> <img
                                     src="/media/{{ post.body_image|default:'default_images/default-post.jpg' }}" alt="null"></a>
                             <div class="post-body">
                                 <div class="post-meta">

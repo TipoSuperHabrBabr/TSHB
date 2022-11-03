@@ -15,8 +15,8 @@ from django.views.generic import CreateView, UpdateView
 
 def index(request):
     posts_list = Post.objects.all().order_by('-created_date')
-    new_posts_list = Post.objects.all().order_by('-created_date')[0:3]
-    old_posts_list = Post.objects.all().order_by('-created_date')[3:]
+    new_posts_list = Post.objects.all().order_by('-created_date')[0:2]
+    old_posts_list = Post.objects.all().order_by('-created_date')[2:]
     paginator = Paginator(old_posts_list, 9)
 
     page_number = request.GET.get('page')
