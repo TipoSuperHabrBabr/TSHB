@@ -29,7 +29,7 @@
                             <h3 class="post-title"><a
                                     href="{% url 'blogapp:read_post' post.id %}">{{ post.title }}</a></h3>
                             <p style="display: block; height: 140px; width: auto; overflow: hidden; text-overflow: ellipsis">
-                                {{ post.body_text }}</p>
+                                {{ post.body_text|truncatechars:400 }}</p>
                         </div>
                     </div>
                 </div>
