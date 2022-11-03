@@ -14,4 +14,6 @@ urlpatterns = [
     path('profile/<int:pk>/', authapp.profile, name='profile'),
     path('profile_banned/<int:pk>/', authapp.profile, name='profile_banned'),
     path('profile_activate/<int:pk>/', authapp.profile, name='profile_activate'),
+    path('profile_moderator_on/<int:pk>/', authapp.profile, name='profile_moderator_on'),
+    path('profile_moderator_off/<int:pk>/', authapp.profile, name='profile_moderator_off'),
 ]

@@ -15,6 +15,15 @@ from django.views.generic import CreateView, UpdateView
 
 def index(request):
     posts_list = Post.objects.all().order_by('-created_date')
+
+    tags_str = ''
+    if posts_list:
+        for post in posts_list:
+            tags_str = f'{tags_str} {post.tags}'
+        tags_list = list(set(tags_str.split()))[:10]
+    else:
+        tags_list = ''
+
     new_posts_list = Post.objects.all().order_by('-created_date')[0:2]
     old_posts_list = Post.objects.all().order_by('-created_date')[2:]
     paginator = Paginator(old_posts_list, 9)
@@ -33,6 +42,7 @@ def index(request):
                       'posts_list': posts_list,
                       'new_posts_list': new_posts_list,
                       'old_posts_list': page_obj,
+                      'tags': tags_list,
                   },
                   )
 
@@ -70,6 +80,7 @@ def blog(request):
 
 def post_detail(request, pk):
     post_id = Post.objects.get(id=pk)
+    tags = post_id.tags.split()
     comments = Comment.objects.filter(post_id=pk, is_active=True).order_by('parent_comment_id')
     user_id = request.user
     new_comment = None
@@ -82,6 +93,7 @@ def post_detail(request, pk):
         comment_form = CommentForm(data=request.POST)
 
         if comment_form.is_valid():
+
             comment_form.save(commit=True)
             # считываем только что сохраненный комментарий
             comment = Comment.objects.get(parent_comment_id=0)
@@ -95,6 +107,7 @@ def post_detail(request, pk):
     return render(request,
                   'blogapp/blog-post.html',
                   {'post': post_id,
+                   'tags': tags,
                    'user_id': user_id,
                    'comments': comments,
                    'new_comment': new_comment,
@@ -186,13 +199,10 @@ def delete_comment(request, pk):
             # иначе удалем только один подкомментарий
             comment.delete()
 
-
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     # selected_comment = get_object_or_404(Comment, id=pk)
     # selected_comment.delete()
-
-
 
 
 @login_required

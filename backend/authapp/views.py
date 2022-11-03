@@ -162,6 +162,13 @@ def profile(request, pk):
             user.save()
             banned_form = BannedForm()
 
+        if '/auth/profile_moderator_on/' in request.path:
+            user.is_moderator = True
+            user.save()
+        if '/auth/profile_moderator_off/' in request.path:
+            user.is_moderator = False
+            user.save()
+
     content = {
         'title': 'Профиль пользователя',
         'user_read': user,

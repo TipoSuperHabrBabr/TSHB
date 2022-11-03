@@ -59,20 +59,28 @@
                         </div>
                     {% endif %}
                 </div>
-
                 <!-- author -->
                 <div class="section-row">
                     <div class="post-author">
-                        <div class="media">
-                            <div class="media-left">
-                                <img alt="" class="media-object" src="/media/{{ post.user_id.avatar }}">
-                            </div>
+                        <div class="media" style="margin-left: 80px;">
                             <div class="media-body">
+                                <!-- tags -->
+                                <div class="aside-widget" style="margin-bottom: -15px;">
+                                    <div class="tags-widget">
+                                        <ul>
+                                            {% for tag in tags %}
+                                            <li><a href="#">#{{tag}}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- /tags -->
                                 {% if user.is_authenticated %}
-                                <div class="media-heading">
-                                    <a href="{% url 'auth:profile' post.user_id.id %}">
-                                        Автор: {{ post.user_id }} (перейти в профиль)
-                                    </a>
+                                <div class="media-heading" style="margin-top: 32px;">
+                                    <div class="media-left">
+                                    <a class="post-img" href="{% url 'auth:profile' post.user_id.id %}"> <img
+                                        src="/media/{{ user.avatar|default:'default_images/default-avatar.png' }}" alt=""  style="height: 64px; width: 64px; object-fit: cover; border-radius: 60px;"> {{ post.user_id }}  (перейти в профиль)</a>
+                                    </div>
                                 </div>
                                 {% endif %}
                                 <ul class="author-social">

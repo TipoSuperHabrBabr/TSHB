@@ -35,15 +35,26 @@
         <form class="form-horizontal" action="{% url 'auth:profile_banned' user_read.id %}" method="post">
           {% csrf_token %}
           {{ banned_form.as_table }}<br>
-          <input type="submit" class="" value="Заблокировать пользователя">
+          <input type="submit" class="" value="Заблокировать пользователя" style="margin-top: 8px;">
         </form>
         {% endif %}
+        {% endif %}
+
+        {% if not user_read.is_moderator and user.is_superuser %}
+          <a href="{% url 'auth:profile_moderator_on' user_read.id %}">
+            <button style="margin-top: 8px;">Сделать модератором</button>
+          </a>
+        {% endif %}
+        {% if user_read.is_moderator and user.is_superuser %}
+          <a href="{% url 'auth:profile_moderator_off' user_read.id %}">
+            <button style="margin-top: 8px;">Сделать обычным пользователем</button>
+          </a>
         {% endif %}
         {% endif %}
         <br>
         <p>
           <a href="{% url 'index' %}">
-            <button>На главную</button>
+            <button style="margin-top: 8px;">На главную</button>
           </a>
         </p>
       </div>

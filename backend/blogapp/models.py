@@ -14,14 +14,14 @@ class Post(models.Model):
         ('MARKETING', 'Маркетинг'),
     )
 
-    category = models.CharField(choices=CATEGORY_CHOICES, blank=True, verbose_name='Категория', max_length=150)
+    category = models.CharField(choices=CATEGORY_CHOICES, blank=False, verbose_name='Категория', max_length=150)
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     body_text = models.TextField()
     body_image = models.ImageField(upload_to='posts/', blank=True)
     created_date = models.DateTimeField(default=timezone.now)
     edit_date = models.DateTimeField(default=timezone.now)
-    tags = models.CharField(max_length=250, blank=True)
+    tags = models.CharField(max_length=250, blank=False)
     is_active = models.BooleanField(default=True)
     is_like = GenericRelation('Like')
 
