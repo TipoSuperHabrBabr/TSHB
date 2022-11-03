@@ -33,7 +33,7 @@
             <div class="col-md-8">
                 <div class="section-row sticky-container">
                     <div class="main-post">
-                        <p>{{ post.body_text }}</p>
+                        <p>{{ post.body_text|safe|linebreaks }}</p>
                         <figure class="figure-img">
                             <img alt="" class="img-responsive" src="/media/posts/detector.png">
                         </figure>
