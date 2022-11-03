@@ -48,10 +48,15 @@
                         </div>
                         {% else %}
                         <div class="post-shares sticky-shares">
-                            <a><i class="fa fa-thumbs-up"></i></a>
+                            <a href="{% url 'blogapp:like' 'Post' post.id post.id%}"><i class="fa fa-thumbs-up"></i></a>
                             <a>{{like_posts.count}}</a>
                         </div>
                         {% endif %}
+                        {% else %}
+                        <div class="post-shares sticky-shares">
+                            <a><i class="fa fa-thumbs-up"></i></a>
+                            <a>{{like_posts.count}}</a>
+                        </div>
                     {% endif %}
                 </div>
 
