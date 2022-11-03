@@ -133,5 +133,6 @@ dmypy.json
 !**/migrations/__init__.py
 
 backend/media/posts
+backend/media/users_avatars
 
 

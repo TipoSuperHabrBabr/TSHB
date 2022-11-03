@@ -75,14 +75,12 @@
                                     </div>
                                 </div>
                                 <!-- /tags -->
-                                {% if user.is_authenticated %}
                                 <div class="media-heading" style="margin-top: 32px;">
                                     <div class="media-left">
                                     <a class="post-img" href="{% url 'auth:profile' post.user_id.id %}"> <img
-                                        src="/media/{{ user.avatar|default:'default_images/default-avatar.png' }}" alt=""  style="height: 64px; width: 64px; object-fit: cover; border-radius: 60px;"> {{ post.user_id }}  (перейти в профиль)</a>
+                                        src="/media/{{ post.user_id.avatar|default:'default_images/default-avatar.png' }}" alt=""  style="height: 64px; width: 64px; object-fit: cover; border-radius: 60px;"> {{ post.user_id }}  (перейти в профиль)</a>
                                     </div>
                                 </div>
-                                {% endif %}
                                 <ul class="author-social">
                                     <li><a href="#"><i class="fa fa-facebook"></i></a></li>
                                     <li><a href="#"><i class="fa fa-twitter"></i></a></li>
@@ -126,20 +124,19 @@
                     <div class="section-title">
                         <h2>Комментарии: {{ comments.count }}</h2>
                     </div>
+
                     {% for comment in comments %}
-
-
                     <div class="post-comments">
 
                         <div class="media">
+                            {% if comment.head_comment %}
                             <div class="media-left">
-                                <img alt="" class="media-object" src="/media/{{ comment.user_id.avatar }}">
+                                <img alt="" class="media-object" src="/media/{{ comment.user_id.avatar|default:'default_images/default-avatar.png' }}">
                             </div>
 
-                            {% if comment.head_comment %}
                             <div class="media-body">
                                 <div class="media-heading">
-                                    <h4>{{ comment.user_id }} </h4>
+                                    <h4>{{ comment.user_id }}</h4>
 
                                     <span class="time">{{ comment.created_date }}</span>
                                     {% if user.is_authenticated %}
@@ -164,21 +161,21 @@
 
 
                                     <a href="{% url 'blogapp:like' 'Comment' post.id comment.id %}"
-                                       style="margin: 25px">Likes
+                                       style="margin: 25px; text-decoration: none;"><i class="fa fa-thumbs-up" aria-hidden="true"></i>
                                         <span class="badge rounded-pill">
 
                                             <span class="visually-hidden">{{comment.total_likes}}</span>
                                           </span>
                                     </a>
 
-
                                     {% endif %}
-
-
                                 </div>
-                                <p>{{ comment.body_text }}</p>
+                                <p1>{{ comment.body_text|safe|linebreaks }}</p1>
                             </div>
                             {% else %}
+                            <div class="media-left">
+                                <img alt="" class="media-object" src="/media/{{ comment.user_id.avatar|default:'default_images/default-avatar.png' }}" style="margin-left: 60px;">
+                            </div>
                             <div class="media-body">
                                 <div class="media-heading-reply">
                                     <h5>{{ comment.user_id }}</h5>
@@ -187,25 +184,31 @@
                                     {% if user.is_authenticated %}
 
                                     {% if comment.user_id == user_id or user_id.is_superuser or user_id.is_moderator %}
-                                    <a class="reply" href="{% url 'blogapp:comment_delete' comment.id %}">
-                                        Delete
+                                    <a class="reply" href="{% url 'blogapp:comment_delete' comment.id %}" style="color: #a7b3c6;">
+                                        Удалить
                                     </a>
-                                    <a class="reply" href="{% url 'blogapp:comment_update' comment.id post.id %}">
-                                        Update
+                                    <a class="reply" href="{% url 'blogapp:comment_update' comment.id post.id %}" style="color: #a7b3c6;">
+                                        Изменить
                                     </a>
                                     {% endif %}
+                                    {% endif %}
+
+<!--                                    <a href="{% url 'blogapp:like' 'Comment' post.id comment.id %}"-->
+<!--                                       style="margin: 25px">Like-->
+<!--                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">-->
+<!--                                                <span class="visually-hidden">{{comment.total_likes}}</span>-->
+<!--                                            </span>-->
+<!--                                    </a>-->
 
                                     <a href="{% url 'blogapp:like' 'Comment' post.id comment.id %}"
-                                       style="margin: 25px">Like
+                                       style="margin: 25px; text-decoration: none;"><i class="fa fa-thumbs-up" aria-hidden="true"></i>
                                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-
                                                 <span class="visually-hidden">{{comment.total_likes}}</span>
                                             </span>
                                     </a>
-                                    {% endif %}
 
+                                    <p1 class="sub-comment">{{ comment.body_text|safe|linebreaks }}</p1>
 
-                                    <p class="sub-comment">{{ comment.body_text }}</p>
                                 </div>
                             </div>
 

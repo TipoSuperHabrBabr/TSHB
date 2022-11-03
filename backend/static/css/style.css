@@ -919,6 +919,7 @@ textarea.input {
 .post-comments .media {
     padding-top: 15px;
     border-top: 1px solid #eceef2;
+    margin-bottom: 30px;
 }
 
 .post-comments .media:nth-child(1) {
@@ -945,16 +946,21 @@ textarea.input {
 }
 
 .media-heading-reply .sub-comment {
+    margin-left: 30px;
+    color: #212631;
+
 
     margin-top: 5px;
     font-size: 16px;
-    color: #000000;
+
 
 }
 
 .post-comments .media .media-body .media-heading h4 {
     text-transform: capitalize;
+    margin-bottom: -3px;
 }
+
 
 .post-comments .media .media-body .media-heading .time {
     font-size: 13px;
@@ -962,11 +968,18 @@ textarea.input {
     color: #a7b3c6;
 }
 
+
 .post-comments .media .media-body .media-heading .reply {
     font-size: 13px;
     color: #a7b3c6;
     -webkit-transition: 0.2s color;
     transition: 0.2s color;
+    margin-bottom: -30px;
+}
+
+.post-comments .media .media-body .media-heading-reply h5 {
+    text-transform: capitalize;
+    margin-bottom: -1px;
 }
 
 .post-comments .media .media-body .media-heading .reply:hover,

@@ -104,8 +104,7 @@ def post_detail(request, pk):
     else:
         comment_form = CommentForm(initial={'user_id': user_id, 'post_id': post_id, })
 
-    return render(request,
-                  'blogapp/blog-post.html',
+    return render(request, 'blogapp/blog-post.html',
                   {'post': post_id,
                    'tags': tags,
                    'user_id': user_id,
