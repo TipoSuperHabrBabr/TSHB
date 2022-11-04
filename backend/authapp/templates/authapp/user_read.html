@@ -22,6 +22,10 @@
         <p>{{ object.gender }}</p>
         <b>Электронная почта</b>
         <p>{{ object.email }}</p>
+        <h4 style="color: red">За нарушение правил
+          поведения на сайте Вы не можете оставлять комментарии
+          до {{ object.stop_banned_time }}</h4>
+
         <p>
           <button>
             <a href={% url 'auth:edit' %}>

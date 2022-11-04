@@ -19,6 +19,7 @@
         <b>Электронная почта</b>
         <p>{{ user_read.email }}</p>
 
+
         {% if user_read.id != user.id %}
         {% if user.is_moderator or user.is_superuser %}
         {% if user_read.is_banned %}
