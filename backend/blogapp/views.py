@@ -187,13 +187,10 @@ def delete_comment(request, pk):
             # иначе удалем только один подкомментарий
             comment.delete()
 
-
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
     # selected_comment = get_object_or_404(Comment, id=pk)
     # selected_comment.delete()
-
-
 
 
 @login_required
@@ -238,8 +235,6 @@ class CommentUpdateView(UpdateView):
         return reverse('blogapp:read_post', kwargs=dict(pk=self.kwargs['pkp']))
 
 
-
-
 @login_required
 def like(request, obj, pk, pkc):
     user = request.user
@@ -253,9 +248,11 @@ def like(request, obj, pk, pkc):
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+
 def notification_to_moderator(text,request):
     if text.find('@moderator') != -1:
-        path = request.get_raw_uri()
+        print(f'1111111 {request.build_absolute_uri()}')
+        path = request.build_absolute_uri()
         notification = Notification()
         notification.path = path
         notification.body_text = text
