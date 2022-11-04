@@ -257,7 +257,6 @@ def notification_to_moderator(text,request):
     if text.find('@moderator') != -1:
         path = request.get_raw_uri()
         notification = Notification()
-        notification.moderate_id = BlogUser.objects.filter(is_moderator=True).order_by("?").first()
         notification.path = path
         notification.body_text = text
         notification.save()

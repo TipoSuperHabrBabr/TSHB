@@ -133,7 +133,7 @@ class UserDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super(UserDetailView, self).get_context_data(**kwargs)
-        ctx['notification'] = Notification.objects.filter(moderate_id=self.object.id).order_by('created_date')
+        ctx['notification'] = Notification.objects.all().order_by('created_date')
         return ctx
 
 
