@@ -34,9 +34,9 @@
                 <div class="section-row sticky-container">
                     <div class="main-post">
                         <p>{{ post.body_text|safe|linebreaks }}</p>
-                        <figure class="figure-img">
-                            <img alt="" class="img-responsive" src="/media/posts/detector.png">
-                        </figure>
+<!--                        <figure class="figure-img">-->
+<!--                            <img alt="" class="img-responsive" src="/media/posts/detector.png">-->
+<!--                        </figure>-->
                     </div>
                     {% if user.is_authenticated %}
                         {% if post.user_id == user_id or user_id.is_superuser or user_id.is_moderator %}
@@ -95,6 +95,13 @@
                 <div class="row" style="margin-left: 70px">
                     <div class="col-md-20">
                         {% if user.is_authenticated %}
+                        {% if user.is_banned %}
+                        <p>За нарушения правил пользования сайтом Вы не можете
+                            оставлять комментарии до {{ user.stop_banned_time }}
+                        </p>
+                        {% else %}
+
+
                         {% if new_comment %}
                         <h2>Your comment has been added.</h2>
                         {% endif %}
@@ -117,6 +124,14 @@
                             <p><input type="submit" value="Оставить"></p>
                         </form>
                         {% endif %}
+                        {% else %}
+                        <p>Чтобы оставить комментарий
+                        <a href="{% url 'auth:login' %}">войдите</a> в
+                            свой аккаунт или <a href="{% url 'auth:register' %}">зарегистрируйтесь.</a>
+                        </p>
+
+                        {% endif %}
+
                     </div>
                 </div>
                 <!-- comments -->

@@ -10,6 +10,9 @@
           Пользователь<strong>{{ object.category.first_name|title }} -
             {{ object.username|title }}</strong><br>
 
+          {% if user.is_moderator %}
+          Вы являетесь модератором. <br>
+          {% endif %}
           <div class="box" style="margin-top: 30px; margin-bottom: 30px;">
             <img src="/media/{{ object.avatar|default:'default_images/default-avatar.png' }}" alt="{{ object.username }}">
           </div>
@@ -21,6 +24,11 @@
             <b>Электронная почта</b>
             <p>{{ object.email }}</p>
             <p>
+                {% if user.is_banned %}
+                <h4 style="color: red">За нарушение правил
+                  поведения на сайте Вы не можете оставлять комментарии
+                  до {{ object.stop_banned_time }}</h4>
+                {% endif %}
               <button>
                 <a href={% url 'auth:edit' %}>
                   Редактировать
@@ -44,7 +52,9 @@
                   <a href="{% url 'authapp:notification_delete' notis.id %}">Удалить</a></li>
             {% endfor %}
             {% endif %}
-        </div>
+      </div>
 
     </div>
+  </div>
+</div>
     {% endblock %}
