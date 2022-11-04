@@ -81,7 +81,7 @@ def blog(request):
 def post_detail(request, pk):
     post_id = Post.objects.get(id=pk)
     tags = post_id.tags.split()
-    comments = Comment.objects.filter(post_id=pk, is_active=True).order_by('parent_comment_id')
+    comments = Comment.objects.filter(post_id=pk, is_active=True).order_by('-parent_comment_id')
     user_id = request.user
     new_comment = None
     model_type_posts = ContentType.objects.get_for_model(Post)
