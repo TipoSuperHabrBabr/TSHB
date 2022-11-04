@@ -87,8 +87,8 @@ def post_detail(request, pk):
             comment = Comment.objects.get(parent_comment_id=0)
             # и записываем собственный id как родительский
             comment.parent_comment_id = comment.id
-            notification_to_moderator(comment.body_text, request)
             comment.save()
+            notification_to_moderator(comment.body_text, request)
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
         comment_form = CommentForm(initial={'user_id': user_id, 'post_id': post_id, })
@@ -213,8 +213,8 @@ def comment_reply(request, pk):
         comment_new.body_text = reply_form['body_text'].value()
         comment_new.parent_comment_id = comment.id
         comment_new.head_comment = False
-        notification_to_moderator(comment_new.body_text, request)
         comment_new.save()
+        notification_to_moderator(comment_new.body_text, request)
         # возвращаемся на страницу описания блога с комментариями
         return HttpResponseRedirect(f'/blog/read_post/{comment.post_id.id}/')
 
