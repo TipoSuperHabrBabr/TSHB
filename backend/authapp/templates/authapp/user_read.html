@@ -10,7 +10,7 @@
           Пользователь<strong>{{ object.category.first_name|title }} -
             {{ object.username|title }}</strong><br>
 
-          <div class="box">
+          <div class="box" style="margin-top: 30px; margin-bottom: 30px;">
             <img src="/media/{{ object.avatar|default:'default_images/default-avatar.png' }}" alt="{{ object.username }}">
           </div>
           <div class="post">
@@ -35,19 +35,16 @@
           </div>
       </div>
       <div class="profi_item_right">
-        {% if object.is_moderator %}
+            {% if object.is_moderator %}
             <b>Вы являетесь модератором. <br></b>
             <b>Ваши уведомления:</b>
             {% for notis in notification %}
                 <p><li>{{ notis.body_text }}
-                <p><a href={{ notis.path }}>
-                    Перейти
-                  </a>
-                  <a href="{% url 'authapp:notification_delete' notis.id %}">
-                                              Удалить
-                                          </a></li>
+                <p><a href={{ notis.path }}>Перейти</a>
+                  <a href="{% url 'authapp:notification_delete' notis.id %}">Удалить</a></li>
             {% endfor %}
+            {% endif %}
         </div>
-        {% endif %}
+
     </div>
     {% endblock %}
