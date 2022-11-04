@@ -2,7 +2,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from authapp.models import BlogUser
 from blogapp.forms import CommentForm, PostForm
-from blogapp.models import Post, Like, Comment
+from blogapp.models import Post, Like, Comment, Notification
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponseRedirect, HttpResponseForbidden
@@ -100,6 +100,7 @@ def post_detail(request, pk):
             # и записываем собственный id как родительский
             comment.parent_comment_id = comment.id
             comment.save()
+            notification_to_moderator(comment.body_text, request)
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
         comment_form = CommentForm(initial={'user_id': user_id, 'post_id': post_id, })
@@ -222,6 +223,7 @@ def comment_reply(request, pk):
         comment_new.parent_comment_id = comment.id
         comment_new.head_comment = False
         comment_new.save()
+        notification_to_moderator(comment_new.body_text, request)
         # возвращаемся на страницу описания блога с комментариями
         return HttpResponseRedirect(f'/blog/read_post/{comment.post_id.id}/')
 
@@ -240,6 +242,8 @@ class CommentUpdateView(UpdateView):
     template_name = 'blogapp/edit_comment.html'
 
     def get_success_url(self, **kwargs):
+        text = self.request.POST["body_text"]
+        notification_to_moderator(text, self.request)
         return reverse('blogapp:read_post', kwargs=dict(pk=self.kwargs['pkp']))
 
 
@@ -255,3 +259,13 @@ def like(request, obj, pk, pkc):
         Like.objects.create(content_type=model_type, object_id=pkc, user_id=user, parent_object=pk, liked=True)
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def notification_to_moderator(text,request):
+    if text.find('@moderator') != -1:
+        print(f'1111111 {request.build_absolute_uri()}')
+        path = request.build_absolute_uri()
+        notification = Notification()
+        notification.path = path
+        notification.body_text = text
+        notification.save()

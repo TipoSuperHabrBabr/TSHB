@@ -10,6 +10,7 @@ import datetime
 
 from authapp.forms import BlogUserLoginForm, BlogUserRegisterForm, BlogUserEditForm, BannedForm
 from authapp.models import BlogUser
+from blogapp.models import Notification
 
 
 def password_change(request,
@@ -132,7 +133,7 @@ class UserDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super(UserDetailView, self).get_context_data(**kwargs)
-        ctx['ctx'] = ctx
+        ctx['notification'] = Notification.objects.all().order_by('created_date')
         return ctx
 
 
@@ -175,3 +176,8 @@ def profile(request, pk):
         'banned_form': banned_form,
     }
     return render(request, 'authapp/profile.html', content)
+
+def delete_notification(request, pk):
+    notification = Notification.objects.get(id=pk)
+    notification.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

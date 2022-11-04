@@ -16,4 +16,5 @@ urlpatterns = [
     path('profile_activate/<int:pk>/', authapp.profile, name='profile_activate'),
     path('profile_moderator_on/<int:pk>/', authapp.profile, name='profile_moderator_on'),
     path('profile_moderator_off/<int:pk>/', authapp.profile, name='profile_moderator_off'),
+    path('notification_delete/<int:pk>/', authapp.delete_notification, name='notification_delete'),
 ]

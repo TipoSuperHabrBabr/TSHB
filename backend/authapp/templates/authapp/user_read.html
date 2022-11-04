@@ -5,35 +5,49 @@
 <div class="section">
   <!-- container -->
   <div class="container">
-    <div class="row">
+    <div class="profi_item">
+      <div class="profi_item_left">
+          Пользователь<strong>{{ object.category.first_name|title }} -
+            {{ object.username|title }}</strong><br>
 
-      Пользователь<strong>{{ object.category.first_name|title }} -
-        {{ object.username|title }}</strong><br>
-      {% if user.is_moderator %}
-      Вы являетесь модератором. <br>
-      {% endif %}
-      <div class="box">
-        <img src="/media/{{ object.avatar|default:'default_images/default-avatar.png' }}" alt="{{ object.username }}">
+          <div class="box">
+            <img src="/media/{{ object.avatar|default:'default_images/default-avatar.png' }}" alt="{{ object.username }}">
+          </div>
+          <div class="post">
+            <b>О себе</b>
+            <p>{{ object.about_me }}</p>
+            <b>Пол</b>
+            <p>{{ object.gender }}</p>
+            <b>Электронная почта</b>
+            <p>{{ object.email }}</p>
+            <p>
+              <button>
+                <a href={% url 'auth:edit' %}>
+                  Редактировать
+                </a>
+              </button>
+              <button>
+                <a href={% url 'index' %}>
+                  На главную
+                </a>
+              </button>
+            </p>
+          </div>
       </div>
-      <div class="post">
-        <b>О себе</b>
-        <p>{{ object.about_me }}</p>
-        <b>Пол</b>
-        <p>{{ object.gender }}</p>
-        <b>Электронная почта</b>
-        <p>{{ object.email }}</p>
-        <p>
-          <button>
-            <a href={% url 'auth:edit' %}>
-              Редактировать
-            </a>
-          </button>
-          <button>
-            <a href={% url 'index' %}>
-              На главную
-            </a>
-          </button>
-        </p>
-      </div>
+      <div class="profi_item_right">
+        {% if object.is_moderator %}
+            <b>Вы являетесь модератором. <br></b>
+            <b>Ваши уведомления:</b>
+            {% for notis in notification %}
+                <p><li>{{ notis.body_text }}
+                <p><a href={{ notis.path }}>
+                    Перейти
+                  </a>
+                  <a href="{% url 'authapp:notification_delete' notis.id %}">
+                                              Удалить
+                                          </a></li>
+            {% endfor %}
+        </div>
+        {% endif %}
     </div>
     {% endblock %}
