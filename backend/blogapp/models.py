@@ -57,3 +57,9 @@ class Like(models.Model):
     content_object = GenericForeignKey('content_type', 'object_id')
     parent_object = models.IntegerField(default=0)
     created_date = models.DateTimeField(auto_now_add=True)
+
+class Notification(models.Model):
+    moderate_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    body_text = models.TextField(verbose_name='текст сообщения')
+    path = models.TextField(verbose_name='Ссылка', default=None)
+    created_date = models.DateTimeField(default=timezone.now)

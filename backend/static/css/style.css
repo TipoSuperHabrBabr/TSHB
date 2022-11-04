@@ -406,6 +406,26 @@ textarea.input {
     object-fit: cover;
 }
 
+.profi_item {
+   display: flex;
+   flex-direction: row;
+   margin-right: 15px;
+   margin-left: 15px;
+}
+
+.profi_item_left {
+  display: inline-block;
+  margin-right: 15px;
+  margin-left: 15px;
+}
+
+.profi_item_right {
+  display: inline-block;
+  margin-right: 15px;
+  margin-left: 15px;
+  max-width: 30%
+}
+
 /*----------------------------*\
 	search
 \*----------------------------*/

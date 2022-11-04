@@ -14,4 +14,5 @@ urlpatterns = [
     path('profile/<int:pk>/', authapp.profile, name='profile'),
     path('profile_banned/<int:pk>/', authapp.profile, name='profile_banned'),
     path('profile_activate/<int:pk>/', authapp.profile, name='profile_activate'),
+    path('notification_delete/<int:pk>/', authapp.delete_notification, name='notification_delete'),
 ]

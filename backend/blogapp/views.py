@@ -2,7 +2,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from authapp.models import BlogUser
 from blogapp.forms import CommentForm, PostForm
-from blogapp.models import Post, Like, Comment
+from blogapp.models import Post, Like, Comment, Notification
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponseRedirect, HttpResponseForbidden
@@ -87,6 +87,7 @@ def post_detail(request, pk):
             comment = Comment.objects.get(parent_comment_id=0)
             # и записываем собственный id как родительский
             comment.parent_comment_id = comment.id
+            notification_to_moderator(comment.body_text, request)
             comment.save()
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
@@ -212,6 +213,7 @@ def comment_reply(request, pk):
         comment_new.body_text = reply_form['body_text'].value()
         comment_new.parent_comment_id = comment.id
         comment_new.head_comment = False
+        notification_to_moderator(comment_new.body_text, request)
         comment_new.save()
         # возвращаемся на страницу описания блога с комментариями
         return HttpResponseRedirect(f'/blog/read_post/{comment.post_id.id}/')
@@ -231,7 +233,11 @@ class CommentUpdateView(UpdateView):
     template_name = 'blogapp/edit_comment.html'
 
     def get_success_url(self, **kwargs):
+        text = self.request.POST["body_text"]
+        notification_to_moderator(text, self.request)
         return reverse('blogapp:read_post', kwargs=dict(pk=self.kwargs['pkp']))
+
+
 
 
 @login_required
@@ -246,3 +252,12 @@ def like(request, obj, pk, pkc):
         Like.objects.create(content_type=model_type, object_id=pkc, user_id=user, parent_object=pk, liked=True)
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+def notification_to_moderator(text,request):
+    if text.find('@moderator') != -1:
+        path = request.get_raw_uri()
+        notification = Notification()
+        notification.moderate_id = BlogUser.objects.filter(is_moderator=True).order_by("?").first()
+        notification.path = path
+        notification.body_text = text
+        notification.save()
