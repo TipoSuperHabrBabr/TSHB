@@ -1,10 +1,9 @@
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-
 from authapp.models import BlogUser
 from blogapp.forms import CommentForm, PostForm
 from blogapp.models import Post, Like, Comment, Notification
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
@@ -93,7 +92,6 @@ def post_detail(request, pk):
         comment_form = CommentForm(data=request.POST)
 
         if comment_form.is_valid():
-
             comment_form.save(commit=True)
             # считываем только что сохраненный комментарий
             comment = Comment.objects.get(parent_comment_id=0)
@@ -261,7 +259,7 @@ def like(request, obj, pk, pkc):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-def notification_to_moderator(text,request):
+def notification_to_moderator(text, request):
     if text.find('@moderator') != -1:
         print(f'1111111 {request.build_absolute_uri()}')
         path = request.build_absolute_uri()
