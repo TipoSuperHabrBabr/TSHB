@@ -14,7 +14,7 @@ from django.views.generic import CreateView, UpdateView
 
 
 def index(request):
-    posts_list = Post.objects.all().order_by('-created_date')
+    posts_list = Post.objects.all().filter(is_active=True).order_by('-created_date')
 
     tags_str = ''
     if posts_list:
@@ -24,8 +24,8 @@ def index(request):
     else:
         tags_list = ''
 
-    new_posts_list = Post.objects.all().order_by('-created_date')[0:2]
-    old_posts_list = Post.objects.all().order_by('-created_date')[2:]
+    new_posts_list = posts_list[0:2]
+    old_posts_list = posts_list[2:]
     paginator = Paginator(old_posts_list, 9)
 
     page_number = request.GET.get('page')
@@ -57,7 +57,7 @@ def blog(request):
     }
     category_id = request.GET.get('id')
     current_category = categories[category_id]
-    posts_list = Post.objects.filter(category=current_category).order_by('-created_date')
+    posts_list = Post.objects.filter(category=current_category, is_active=True).order_by('-created_date')
     paginator = Paginator(posts_list, 6)
 
     page_number = request.GET.get('page')
