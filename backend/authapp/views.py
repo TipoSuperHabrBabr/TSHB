@@ -11,6 +11,7 @@ import datetime
 from authapp.forms import BlogUserLoginForm, BlogUserRegisterForm, BlogUserEditForm, BannedForm
 from authapp.models import BlogUser
 from blogapp.models import Notification
+from blogapp.models import Post
 
 
 def password_change(request,
@@ -117,7 +118,6 @@ def edit(request):
     else:
         edit_form = BlogUserEditForm(instance=request.user)
 
-
     content = {
         'title': 'Редактирование',
         'edit_form': edit_form,
@@ -134,6 +134,9 @@ class UserDetailView(DetailView):
     def get_context_data(self, **kwargs):
         ctx = super(UserDetailView, self).get_context_data(**kwargs)
         ctx['notification'] = Notification.objects.all().order_by('created_date')
+        user_pk = ctx["object"].id
+        user_posts = Post.objects.filter(user_id=user_pk, is_active=True).order_by('-created_date')
+        ctx['posts'] = user_posts
         return ctx
 
 
@@ -153,6 +156,8 @@ def profile(request, pk):
     else:
         # если простой запрос страницы
         banned_form = BannedForm()
+        user_posts = Post.objects.filter(user_id=user.id, is_active=True).order_by('-created_date')
+        print(f'111111111111   {user_posts}')
         
         # или команда снять блокировку
         if '/auth/profile_activate/' in request.path:
@@ -162,10 +167,11 @@ def profile(request, pk):
             user.stop_banned_time = None
             user.save()
             banned_form = BannedForm()
-
+        # команда дать модератора
         if '/auth/profile_moderator_on/' in request.path:
             user.is_moderator = True
             user.save()
+        # команда убрать модератора
         if '/auth/profile_moderator_off/' in request.path:
             user.is_moderator = False
             user.save()
@@ -174,8 +180,10 @@ def profile(request, pk):
         'title': 'Профиль пользователя',
         'user_read': user,
         'banned_form': banned_form,
+        'posts': user_posts,
     }
     return render(request, 'authapp/profile.html', content)
+
 
 def delete_notification(request, pk):
     notification = Notification.objects.get(id=pk)

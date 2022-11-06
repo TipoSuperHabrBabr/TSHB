@@ -47,14 +47,17 @@
             <b>Вы являетесь модератором. <br></b>
             <b>Ваши уведомления:</b>
             {% for notis in notification %}
-                <p><li>{{ notis.body_text }}
-                <p><a href={{ notis.path }}>Перейти</a>
-                  <a href="{% url 'authapp:notification_delete' notis.id %}">Удалить</a></li>
+            <li><p>{{ notis.body_text }}<a href={{ notis.path }}> Перейти</a>
+                    <a href="{% url 'authapp:notification_delete' notis.id %}">Удалить</a></p></li>
             {% endfor %}
             {% endif %}
+            <b>Ваши статьи:</b>
+            {% for post in posts %}
+                <li><a href="{% url 'blogapp:read_post' post.id %}">{{ post.category }} - {{ post.title }}</a></li>
+            {% endfor %}
       </div>
 
     </div>
   </div>
 </div>
-    {% endblock %}
+{% endblock %}

@@ -5,59 +5,66 @@
 <div class="section">
   <!-- container -->
   <div class="container">
-    <div class="row">
+    <div class="profi_item">
+      <div class="profi_item_left">
+        Пользователь<strong> {{ user_read.first_name|title }} -
+          {{ user_read.username|title }}</strong>
+        <div class="box"><img src="/media/{{ user_read.avatar|default:'default_images/default-avatar.png' }}"
+            alt="{{ user_read.username }}"></div>
+        <div class="post">
+          <b>О себе</b>
+          <p>{{ user_read.about_me }}</p>
+          <b>Пол</b>
+          <p>{{ user_read.gender }}</p>
+          <b>Электронная почта</b>
+          <p>{{ user_read.email }}</p>
 
-      Пользователь<strong>{{ user_read.first_name|title }} -
-        {{ user_read.username|title }}</strong>
-      <div class="box"><img src="/media/{{ user_read.avatar|default:'default_images/default-avatar.png' }}"
-          alt="{{ user_read.username }}"></div>
-      <div class="post">
-        <b>О себе</b>
-        <p>{{ user_read.about_me }}</p>
-        <b>Пол</b>
-        <p>{{ user_read.gender }}</p>
-        <b>Электронная почта</b>
-        <p>{{ user_read.email }}</p>
 
+          {% if user_read.id != user.id %}
+          {% if user.is_moderator or user.is_superuser %}
+          {% if user_read.is_banned %}
+          Пользователь заблокирован на {{ user_read.banned_time }} дней. <br>
+          Дата начала блокировки {{ user_read.start_banned_time }}.<br>
+          Дата окончания блокировки {{ user_read.stop_banned_time }}.<br>
+          <br>
+          <p>
+            <a href="{% url 'auth:profile_activate' user_read.id %}">
+              <button>Разблокировать</button>
+            </a>
+          </p>
+          {% else %}
+          <form class="form-horizontal" action="{% url 'auth:profile_banned' user_read.id %}" method="post">
+            {% csrf_token %}
+            {{ banned_form.as_table }}<br>
+            <input type="submit" class="" value="Заблокировать пользователя" style="margin-top: 8px;">
+          </form>
+          {% endif %}
+          {% endif %}
 
-        {% if user_read.id != user.id %}
-        {% if user.is_moderator or user.is_superuser %}
-        {% if user_read.is_banned %}
-        Пользователь заблокирован на {{ user_read.banned_time }} дней. <br>
-        Дата начала блокировки {{ user_read.start_banned_time }}.<br>
-        Дата окончания блокировки {{ user_read.stop_banned_time }}.<br>
-        <br>
-        <p>
-          <a href="{% url 'auth:profile_activate' user_read.id %}">
-            <button>Разблокировать</button>
-          </a>
-        </p>
-        {% else %}
-        <form class="form-horizontal" action="{% url 'auth:profile_banned' user_read.id %}" method="post">
-          {% csrf_token %}
-          {{ banned_form.as_table }}<br>
-          <input type="submit" class="" value="Заблокировать пользователя" style="margin-top: 8px;">
-        </form>
-        {% endif %}
-        {% endif %}
-
-        {% if not user_read.is_moderator and user.is_superuser %}
-          <a href="{% url 'auth:profile_moderator_on' user_read.id %}">
-            <button style="margin-top: 8px;">Сделать модератором</button>
-          </a>
-        {% endif %}
-        {% if user_read.is_moderator and user.is_superuser %}
-          <a href="{% url 'auth:profile_moderator_off' user_read.id %}">
-            <button style="margin-top: 8px;">Сделать обычным пользователем</button>
-          </a>
-        {% endif %}
-        {% endif %}
-        <br>
-        <p>
-          <a href="{% url 'index' %}">
-            <button style="margin-top: 8px;">На главную</button>
-          </a>
-        </p>
+          {% if not user_read.is_moderator and user.is_superuser %}
+            <a href="{% url 'auth:profile_moderator_on' user_read.id %}">
+              <button style="margin-top: 8px;">Сделать модератором</button>
+            </a>
+          {% endif %}
+          {% if user_read.is_moderator and user.is_superuser %}
+            <a href="{% url 'auth:profile_moderator_off' user_read.id %}">
+              <button style="margin-top: 8px;">Сделать обычным пользователем</button>
+            </a>
+          {% endif %}
+          {% endif %}
+          <br>
+          <p>
+            <a href="{% url 'index' %}">
+              <button style="margin-top: 8px;">На главную</button>
+            </a>
+          </p>
+        </div>
+      </div>
+      <div class="profi_item_right">
+            <b>Автор статей:</b>
+            {% for post in posts %}
+                <li><a href="{% url 'blogapp:read_post' post.id %}">{{ post.category }} - {{ post.title }}</a></li>
+            {% endfor %}
       </div>
     </div>
     {% endblock %}
