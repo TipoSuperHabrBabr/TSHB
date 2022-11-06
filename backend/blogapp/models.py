@@ -58,6 +58,7 @@ class Like(models.Model):
     parent_object = models.IntegerField(default=0)
     created_date = models.DateTimeField(auto_now_add=True)
 
+
 class Notification(models.Model):
     body_text = models.TextField(verbose_name='текст сообщения')
     path = models.TextField(verbose_name='Ссылка', default=None)

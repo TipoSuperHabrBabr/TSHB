@@ -13,8 +13,20 @@ from django.views.generic import CreateView, UpdateView
 
 
 def index(request):
+
     posts_list = Post.objects.all().filter(is_active=True).order_by('-created_date')
 
+    if request.method == "POST":
+        query = request.POST.get('search_text')
+        posts_search = []
+        
+        for post in posts_list:
+            if query.lower() in post.title.lower() or query.lower() in post.body_text.lower():
+                posts_search.append(post)
+
+        posts_list = posts_search
+
+    # формируем список тегов
     tags_str = ''
     if posts_list:
         for post in posts_list:
