@@ -53,7 +53,11 @@
             {% endif %}
             <b>Ваши статьи:</b>
             {% for post in posts %}
-                <li><a href="{% url 'blogapp:read_post' post.id %}">{{ post.category }} - {{ post.title }}</a></li>
+                <li>
+                    <a href="{% url 'blogapp:read_post' post.id %}">{{ post.category }} - {{ post.title }}</a>
+                    <a href="{% url 'blogapp:edit_post' post.id %}" style="margin-left:10px;"><i class="fa fa-pencil"></i></a>
+                    <a href="{% url 'blogapp:delete_post' post.id %}" style="margin-left:10px;"><i class="fa fa-trash"></i></a>
+                </li>
             {% endfor %}
       </div>
 

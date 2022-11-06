@@ -35,10 +35,10 @@
             {{ form.tags }}
 
 
-            <input class="btn btn-primary" onClick="window.open('{% url 'blog:read_post' post.pk %}')" type="submit"
+            <input class="btn btn-primary" type="submit"
                    value="Сохранить"/>
 
-            <a class="btn btn-primary" href="{% url 'index' %}" style="margin: 25px">Назад</a>
+            <a class="btn btn-primary" href="{% url 'index' %}" style="margin: 25px">На главную</a>
 
             <a class="btn btn-danger" href="{% url 'blog:delete_post' post.pk %}" style="margin: 25px">Удалить</a>
 
