@@ -88,6 +88,8 @@ def post_detail(request, pk):
     like_posts = Like.objects.filter(content_type=model_type_posts, object_id=pk, liked=True)
     like_commets = Like.objects.filter(content_type=model_type_commets, parent_object=pk, liked=True)
 
+    path = request.build_absolute_uri()
+
     if request.method == 'POST':
         comment_form = CommentForm(data=request.POST)
 
@@ -112,6 +114,7 @@ def post_detail(request, pk):
                    'form': comment_form,
                    'like_posts': like_posts,
                    'like_commets': like_commets,
+                   'path': path,
                    }
                   )
 

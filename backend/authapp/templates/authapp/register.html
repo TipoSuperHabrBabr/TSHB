@@ -8,6 +8,9 @@
     <div class="container">
     <form class="form-horizontal" action="{% url 'auth:register' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        {% if next %}
+            <input type="hidden" name="next" value="{{ next }}">
+        {% endif %}
         {{ form.as_p }}
         <br>
         <input class="form-control" type="submit" value="Регистрация">

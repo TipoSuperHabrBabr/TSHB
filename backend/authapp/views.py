@@ -66,7 +66,7 @@ def password_change_done(request,
 def login(request):
     login_form = BlogUserLoginForm(data=request.POST)
 
-    next = request.GET.get('next', '')
+    next = request.GET.get("returnUrl")
 
     if request.method == 'POST' and login_form.is_valid:
         username = request.POST['username']
@@ -82,7 +82,7 @@ def login(request):
     content = {
         'title': 'Вход',
         'login_form': login_form,
-        'next': next
+        'next': next,
     }
     return render(request, 'authapp/login.html', content)
 
@@ -98,12 +98,14 @@ def register(request):
         if register_form.is_valid():
             user = register_form.save()
             return HttpResponseRedirect(reverse('auth:login'))
+
     else:
         register_form = BlogUserRegisterForm
 
     content = {
         'title': 'Регистрация',
-        'form': register_form
+        'form': register_form,
+        'path': next,
     }
     return render(request, 'authapp/register.html', content)
 

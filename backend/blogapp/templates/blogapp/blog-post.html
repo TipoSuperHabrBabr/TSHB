@@ -126,8 +126,8 @@
                         {% endif %}
                         {% else %}
                         <p>Чтобы оставить комментарий
-                        <a href="{% url 'auth:login' %}">войдите</a> в
-                            свой аккаунт или <a href="{% url 'auth:register' %}">зарегистрируйтесь.</a>
+                        <a href="{% url 'auth:login' %}?returnUrl={{path}}">войдите</a> в
+                            свой аккаунт или <a href="{% url 'auth:register' %}?returnUrl={{path}}">зарегистрируйтесь.</a>
                         </p>
 
                         {% endif %}
