@@ -33,14 +33,14 @@ def index(request):
         if request.POST.get('year'):
             print('==================================')
             filter_year = request.POST.get('year')
+            filter_month = request.POST.get('month')
             filter_likes = request.POST.get('likes')
-            filter_rate = request.POST.get('rate')
-            # print('year =', filter_year)
-            # print('likes =', filter_likes)
-            # print('rate =', filter_rate)
 
             if filter_year != 'all':
                 posts_list = posts_list.filter(created_date__year=filter_year)
+
+            if filter_month != 'all':
+                posts_list = posts_list.filter(created_date__month=filter_month)
             
             if filter_likes != 'all':
                 print('filter_likes =', int(filter_likes))
