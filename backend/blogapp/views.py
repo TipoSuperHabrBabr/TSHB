@@ -127,7 +127,7 @@ class PostCreateView(CreateView):
         user = self.request.user
         user_id = get_object_or_404(BlogUser, username=user).id
         context_data['user'] = user
-        context_data['user_id '] = user_id
+        context_data['user_id'] = user_id
         context_data['form'] = PostForm(initial={'user_id': user_id})
         return context_data
 
