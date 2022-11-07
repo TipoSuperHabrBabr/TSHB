@@ -407,24 +407,47 @@ textarea.input {
 }
 
 .profi_item {
-   display: flex;
-   flex-direction: row;
-   margin-right: 15px;
-   margin-left: 15px;
+    display: flex;
+    flex-direction: row;
+    margin-right: 15px;
+    margin-left: 15px;
 }
 
 .profi_item_left {
-  display: inline-block;
-  margin-right: 15px;
-  margin-left: 15px;
+    display: inline-block;
+    margin-right: 15px;
+    margin-left: 15px;
 }
 
 .profi_item_right {
-  display: inline-block;
-  margin-right: 15px;
-  margin-left: 15px;
-  max-width: 30%
+    display: inline-block;
+    margin-right: 15px;
+    margin-left: 15px;
+    max-width: 30%
 }
+
+/*----------------------------*\
+	filter
+\*----------------------------*/
+
+.filter-form.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.filter-form {
+    border: 0px solid black;
+
+}
+
+.filter-form div {
+    border: 0px solid black;
+    /* width: 200px; */
+    margin-right: 10px;
+    display: inline-block;
+    align-content: center;
+}
+
 
 /*----------------------------*\
 	search
@@ -667,8 +690,8 @@ textarea.input {
 }
 
 .post .post-img-top>img {
-     height: 350px;
-     width: 350px;
+    height: 350px;
+    width: 350px;
 }
 
 .post .post-img-main>img {

@@ -10,6 +10,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, UpdateView
+from django.db.models import Count
 
 
 def index(request):
@@ -17,14 +18,38 @@ def index(request):
     posts_list = Post.objects.all().filter(is_active=True).order_by('-created_date')
 
     if request.method == "POST":
-        query = request.POST.get('search_text')
-        posts_search = []
-        
-        for post in posts_list:
-            if query.lower() in post.title.lower() or query.lower() in post.body_text.lower():
-                posts_search.append(post)
+        # если это запрос на поиск статьи
+        if request.POST.get('search_text'):
+            query = request.POST.get('search_text')
+            posts_search = []
+            
+            for post in posts_list:
+                if query.lower() in post.title.lower() or query.lower() in post.body_text.lower():
+                    posts_search.append(post)
+            # основной список постов заменяем на поисковый
+            posts_list = posts_search
 
-        posts_list = posts_search
+        # если это запрос на фильтрацию статей
+        if request.POST.get('year'):
+            print('==================================')
+            filter_year = request.POST.get('year')
+            filter_likes = request.POST.get('likes')
+            filter_rate = request.POST.get('rate')
+            # print('year =', filter_year)
+            # print('likes =', filter_likes)
+            # print('rate =', filter_rate)
+
+            if filter_year != 'all':
+                posts_list = posts_list.filter(created_date__year=filter_year)
+            
+            if filter_likes != 'all':
+                print('filter_likes =', int(filter_likes))
+                # фильтруем посты, где есть хотябы 1 лайк
+                posts_list = posts_list.filter(is_like__liked=1)
+                # суммируем лайки по каждому посту
+                posts_list = posts_list.annotate(cnt_likes=Count('is_like__liked'))
+                # фильтруем посты по количеству лайков в фильтре
+                posts_list = posts_list.filter(cnt_likes__gte=int(filter_likes))   
 
     # формируем список тегов
     tags_str = ''
