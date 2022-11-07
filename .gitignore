@@ -132,7 +132,7 @@ dmypy.json
 !**/migrations
 !**/migrations/__init__.py
 
-#backend/media/posts
-#backend/media/users_avatars
+backend/media/posts
+backend/media/users_avatars
 
 
