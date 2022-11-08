@@ -49,7 +49,7 @@ def index(request):
                 # суммируем лайки по каждому посту
                 posts_list = posts_list.annotate(cnt_likes=Count('is_like__liked'))
                 # фильтруем посты по количеству лайков в фильтре
-                posts_list = posts_list.filter(cnt_likes__gte=int(filter_likes))   
+                posts_list = posts_list.filter(cnt_likes__gte=int(filter_likes))
 
     # формируем список тегов
     tags_str = ''

@@ -50,9 +50,8 @@
                 <ul class="nav-aside-menu">
                     <li><a href="{% url 'index' %}">Главная</a></li>
                     {% if user.is_authenticated %}
-                    <li>UserName: {{ user.username }}</li>
                     <li><a href="{% url 'blog:create_post' %}">Создать статью</a></li>
-                    <li><a href="{% url 'auth:user_read' user.id %}">Личный кабинет</a></li>
+                    <li><a href="{% url 'auth:user_read' user.id %}">Личный кабинет</a> ({{ user.username }})</li>
                     <li><a href="{% url 'auth:logout' %}">Выйти</a></li>
                     {% else %}
                     <li><a href="{% url 'auth:login' %}">Войти</a></li>
