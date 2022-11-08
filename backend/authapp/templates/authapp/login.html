@@ -14,7 +14,10 @@
         {{ login_form.as_p }}
         <br>
         <input class="form-control" type="submit" value="Войти">
+        <input type="hidden" name="return_to"  value="{{ request.META.HTTP_REFERER }}">
     </form>
+
+
     <button class="btn btn-link form-control">
         <a href="{% url 'auth:register' %}">
             Регистрация

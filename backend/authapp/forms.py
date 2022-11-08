@@ -16,6 +16,7 @@ class BlogUserLoginForm(AuthenticationForm):
             field.widget.attrs['class'] = 'form-control'
 
 
+
 class BlogUserRegisterForm(UserCreationForm):
     class Meta:
         model = BlogUser

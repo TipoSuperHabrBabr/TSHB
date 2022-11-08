@@ -1,6 +1,6 @@
 from django.contrib import auth
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, resolve_url, get_object_or_404
+from django.shortcuts import render, redirect, resolve_url, get_object_or_404
 from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.contrib.auth.forms import PasswordChangeForm
@@ -76,7 +76,8 @@ def login(request):
             if 'next' in request.POST.keys():
                 return HttpResponseRedirect(request.POST['next'])
             else:
-                return HttpResponseRedirect(reverse('index'))
+                return redirect(request.POST['return_to'])
+
 
     content = {
         'title': 'Вход',
@@ -97,6 +98,7 @@ def register(request):
         if register_form.is_valid():
             user = register_form.save()
             return HttpResponseRedirect(reverse('auth:login'))
+            
     else:
         register_form = BlogUserRegisterForm
 

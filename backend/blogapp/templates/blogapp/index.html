@@ -17,6 +17,7 @@
                 </div>
                 <!-- Тут 2 поста самых свежих через цикл -->
                 <!-- post -->
+
                 {% for post in new_posts_list %}
                     <div class="col-md-4" style="float: left; width: 580px; height: 350px; margin-bottom: 25px; margin-top: -15px;">
                         <div class="post post-thumb">
@@ -65,6 +66,7 @@
                         </div>
                     </div>
                 {% endfor %}
+
             </div>
                 <div class="pagination">
                     <span class="step-links">
@@ -162,3 +164,8 @@
 
 
 
+<!--                {% if user_read.id != user.id %} на главной странице незарег пользоатель  не видит ничего-->
+<!--                {% endif %}-->
+<!--                {% if user_read.id == user.id %} незаригист пользователь видит кнопку зарегиться-->
+<!--                    <li><a href="{% url 'auth:register' %}">Регистрация</a></li>-->
+<!--                {% endif %}-->
