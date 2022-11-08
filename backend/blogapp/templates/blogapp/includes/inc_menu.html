@@ -18,7 +18,7 @@
                     <li class="cat-3"><a href="{% url 'blog:category' %}?id=3">Мобильная разработка</a></li>
                     <li class="cat-4"><a href="{% url 'blog:category' %}?id=4">Маркетинг</a></li>
                     {% if user.is_authenticated %}
-                    <li class="cat-1"><a href="{% url 'blogapp:create_post' %}" style="margin-left: 25px">Создать
+                    <li class="cat-1"><a href="{% url 'blog:create_post' %}" style="margin-left: 25px">Создать
                             статью</a></li>
                     {% endif %}
                 </ul>
@@ -27,10 +27,16 @@
                 <div class="nav-btns">
                     <button class="aside-btn"><i class="fa fa-bars"></i></button>
                     <button class="search-btn"><i class="fa fa-search"></i></button>
-                    <div class="search-form">
-                        <input class="search-input" type="text" name="search" placeholder="Enter Your Search ...">
-                        <button class="search-close"><i class="fa fa-times"></i></button>
-                    </div>
+
+                    <form action="{% url 'index' %}" method="post">
+                        {% csrf_token %}
+                        <div class="search-form">
+                            <input class="search-input" type="text" name="search_text"
+                                placeholder="Enter Your Search ...">
+                            <button class="search-close"><i class="fa fa-times"></i></button>
+                        </div>
+                    </form>
+
                 </div>
                 <!-- /search & aside toggle -->
             </div>
@@ -44,17 +50,16 @@
                 <ul class="nav-aside-menu">
                     <li><a href="{% url 'index' %}">Главная</a></li>
                     {% if user.is_authenticated %}
-                        <li><a href="{% url 'blogapp:create_post' %}">Создать статью</a></li>
-                        <li><a href="{% url 'auth:user_read' user.id %}">Личный кабинет</a></li>
-                        <li><a href="{% url 'auth:logout' %}">Выйти</a></li>
+                    <li><a href="{% url 'blog:create_post' %}">Создать статью</a></li>
+                    <li><a href="{% url 'auth:user_read' user.id %}">Личный кабинет</a> ({{ user.username }})</li>
+                    <li><a href="{% url 'auth:logout' %}">Выйти</a></li>
                     {% else %}
-                        <li><a href="{% url 'auth:login' %}">Войти</a></li>
-                        <li><a href="{% url 'auth:register' %}">Регистрация</a></li>
+                    <li><a href="{% url 'auth:login' %}">Войти</a></li>
+                    <li><a href="{% url 'auth:register' %}">Регистрация</a></li>
                     {% endif %}
                 </ul>
             </div>
             <!-- /nav -->
-
 
             <!-- widget posts -->
             <div class="section-row">
@@ -62,7 +67,8 @@
 
                 {% for post in new_posts_list %}
                 <div class="post post-widget">
-                    <a class="post-img" href="{% url 'blogapp:read_post' post.id %}"><img src="/media/{{ post.body_image|default:'default_images/default-post.jpg' }}" alt=""></a>
+                    <a class="post-img" href="{% url 'blog:read_post' post.id %}"><img
+                            src="/media/{{ post.body_image|default:'default_images/default-post.jpg' }}" alt=""></a>
                     <div class="post-body">
                         <h3 class="post-title"><a href="blog-post.html">{{ post.title }}</a></h3>
                     </div>

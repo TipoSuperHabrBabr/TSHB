@@ -1,0 +1,58 @@
+<div class="section" style="margin-top: -15px;">
+    <div class="container">
+        <div class="row">
+            <!-- filter form -->
+            <!-- <button class="filter-btn">Filter</button> -->
+
+            <form action="{% url 'index' %}" method="post">
+                {% csrf_token %}
+                Фильтр
+                <div class="filter-form">
+                    <div>
+                        <select size="1" name="year">
+                            <option value="all">Год публикации</option>
+                            <option value="2022">2022</option>
+                            <option value="2021">2021</option>
+                            <option value="2020">2020</option>
+                            <option value="2019">2019</option>
+                            <option value="2018">2018</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <select size="1" name="month">
+                            <option value="all">Месяц публикации</option>
+                            <option value="1">январь</option>
+                            <option value="2">февраль</option>
+                            <option value="3">март</option>
+                            <option value="4">апрель</option>
+                            <option value="5">май</option>
+                            <option value="6">июнь</option>
+                            <option value="7">июль</option>
+                            <option value="8">август</option>
+                            <option value="9">сентябрь</option>
+                            <option value="10">октябрь</option>
+                            <option value="11">ноябрь</option>
+                            <option value="12">декабрь</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <select size="1" name="likes">
+                            <option value="all">Порог лайков</option>
+                            <option value="0">> 0</option>
+                            <option value="1">>= 1</option>
+                            <option value="2">>= 2</option>
+                            <option value="5">>= 5</option>
+                            <option value="10">>= 10</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <input type="submit" value="Применить">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
