@@ -144,6 +144,8 @@ class UserDetailView(DetailView):
 
 def profile(request, pk):
     user = get_object_or_404(BlogUser, pk=pk)
+    user_posts = Post.objects.filter(user_id=user.id, is_active=True).order_by('-created_date')
+    print(f'111111111111   {user_posts}')
 
     if request.method == 'POST':
         # если пришла команда забанить пользователя
@@ -158,8 +160,6 @@ def profile(request, pk):
     else:
         # если простой запрос страницы
         banned_form = BannedForm()
-        user_posts = Post.objects.filter(user_id=user.id, is_active=True).order_by('-created_date')
-        print(f'111111111111   {user_posts}')
         
         # или команда снять блокировку
         if '/auth/profile_activate/' in request.path:
